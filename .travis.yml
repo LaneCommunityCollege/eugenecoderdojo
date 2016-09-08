@@ -1,0 +1,26 @@
+language: php
+
+sudo: false
+
+addons:
+  ssh_known_hosts:
+    - coderdojo.lanecc.edu
+
+branches:
+  only:
+  - master
+
+before_install:
+  - openssl aes-256-cbc -K $encrypted_a22d3ba0023f_key -iv $encrypted_a22d3ba0023f_iv -in coderdojo.id_rsa.enc -out coderdojo.id_rsa -d
+  - eval "$(ssh-agent -s)"
+  - chmod 600 $TRAVIS_BUILD_DIR/.travis/coderdojo.id_rsa
+  - ssh-add $TRAVIS_BUILD_DIR/.travis/coderdojo.id_rsa
+
+script: true
+
+deploy:
+  provider: script
+  skip_cleanup: true
+  script: rsync -aqz -e "ssh -p 22123 -o 'StrictHostKeyChecking no' -o 'PasswordAuthentication no' -o 'PubkeyAuthentication yes'" $TRAVIS_BUILD_DIR/public_html/ dojomeister@coderdojo.lanecc.edu:~/www
+  on:
+    branch: master
