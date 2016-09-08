@@ -1,0 +1,153 @@
+/**
+ * Kory's CoderDojo custom css
+ */
+
+.session-wrap {
+  padding: 0 75px;
+  position: relative;
+}
+.cal-icons {
+  padding: 6px 0 0 0;
+  border: 1px black solid;
+  border-radius: 3px;
+  background: white;
+  font-size: 1.2em;
+  text-align: center;
+  margin: auto;
+  margin-bottom: 10px;
+  float: left;
+  h6 {
+    font-weight: bold;
+    text-transform: uppercase;
+    margin: 0 0 5px;
+  }
+  span {
+    display: block;
+    background-color: $gold;
+    padding: 12px;
+    font-weight: bold;
+  }
+}
+#btn-row {
+  .cal-icons {
+    width: auto;
+    padding: 6px 0 0 0;
+    background-color: white;
+    border-radius: 3px;
+    span {
+      background-color: rgba(51, 153, 51, 0.8);
+    }
+  }
+}
+.session-list{
+  .cal-icons {
+    width: 90px;
+  }
+  li {
+    & + li {
+      margin-top: 30px;
+      padding-top: 30px;
+      border-top: 1px solid black;
+    }
+    &:nth-of-type(n+3){
+      margin-top: 15px;
+    }
+  }
+  p {
+    font-size: 1.25em;
+    line-height: 1.25em;
+  }
+  .btn {
+    float: right;
+    position: absolute;
+    right: 75px;
+    bottom: 10px;
+    background: rgba(51, 153, 51, 0.8);
+    font-size: 0.8em;
+    -webkit-transition: all 0.3s ease-out;  /* Android 2.1+, Chrome 1-25, iOS 3.2-6.1, Safari 3.2-6  */
+    transition: all 0.3s ease-out;  /* Chrome 26, Firefox 16+, iOS 7+, IE 10+, Opera, Safari 6.1+  */
+    &:hover {
+      background: rgba(51, 153, 51, 1);
+    }
+    a {
+      color: white;
+    }
+  }
+}
+
+#event-buttons {
+  margin-top: 25px;
+  text-align: left;
+}
+footer {
+  .btn {
+    margin-left: 0;
+    & + .btn {
+      margin-left: 20px;
+    }
+  }
+}
+
+@include breakpoint-max(501px) {
+  .session-wrap {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  .session-list {
+    .btn {
+      right: 15px;
+    }
+  }
+  footer {
+    .btn {
+      margin-bottom: 15px;
+      & + .btn {
+        margin-left: 0;
+      }
+    }
+  }
+}
+
+@include breakpoint-max($screen_sm) {
+  .navbar-nav {
+    width: 100%;
+    margin: 0;
+    li {
+      padding: 0;
+    }
+  }
+  .session-list {
+    li {
+      width: 100%;
+    }
+  }
+}
+
+@include breakpoint-max(1029px) {
+  footer {
+    .view-featured-session {
+      .container {
+        width: 100%;
+      }
+    }
+  }
+}
+
+@include breakpoint-min($screen_sm) {
+  #event-buttons {
+    margin-top: 10px;
+    text-align: right;
+  }
+}
+
+@include breakpoint-min($screen_md) {
+  .session-list {
+    li {
+      & + li {
+        margin-top: 0;
+        padding-top: 0;
+        border-top: none;
+      }
+    }
+  }
+}

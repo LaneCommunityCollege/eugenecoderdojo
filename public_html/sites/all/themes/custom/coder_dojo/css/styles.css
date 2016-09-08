@@ -1,0 +1,1270 @@
+@import url(https://fonts.googleapis.com/css?family=Lato:400,700,900%7CJosefin+Sans:400,600,700,300);
+/* line 2, ../sass/partials/_cody.scss */
+.footer-sponsor-list img {
+  width: auto;
+  height: 100px;
+}
+/* line 6, ../sass/partials/_cody.scss */
+.footer-sponsor-list li {
+  padding: 0 15px;
+  margin-bottom: 25px;
+}
+
+/* line 13, ../sass/partials/_cody.scss */
+.list-inline .row ul {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* FOOTER -------------------------------------------------------- */
+/* line 2, ../sass/partials/_damian.scss */
+.footer-sponsor-list {
+  width: 100%;
+  padding-top: 20px;
+  text-align: center;
+}
+
+/* line 8, ../sass/partials/_damian.scss */
+footer.footer {
+  background: #ffba00;
+  color: #000;
+  padding: 20px 0;
+  min-width: 100%;
+}
+/* line 13, ../sass/partials/_damian.scss */
+footer.footer p {
+  color: #000;
+}
+/* line 16, ../sass/partials/_damian.scss */
+footer.footer a {
+  color: #fff;
+}
+/* line 18, ../sass/partials/_damian.scss */
+footer.footer a:hover {
+  text-decoration: none;
+  color: #ddd;
+}
+/* line 23, ../sass/partials/_damian.scss */
+footer.footer .btn {
+  margin-left: 20px;
+  background: #000;
+  font-size: 0.8em;
+}
+/* line 27, ../sass/partials/_damian.scss */
+footer.footer .btn:hover {
+  color: #ddd;
+}
+
+/* line 34, ../sass/partials/_damian.scss */
+#block-panels-mini-footer {
+  margin-bottom: 50px;
+  min-height: 130px;
+  padding-bottom: 12px;
+}
+
+/* line 40, ../sass/partials/_damian.scss */
+#event-calendar {
+  padding: 10px;
+  border: 2px black solid;
+  border-radius: 6px;
+  background: #fff;
+  font-size: 1.2em;
+  text-align: center;
+  max-width: 75px;
+  margin-bottom: 10px;
+}
+
+/* line 51, ../sass/partials/_damian.scss */
+#event-text {
+  font-size: 2em;
+}
+
+/* line 55, ../sass/partials/_damian.scss */
+#event-text p {
+  font-style: italic;
+  font-size: 0.8em;
+}
+
+/* line 60, ../sass/partials/_damian.scss */
+#event-buttons {
+  text-align: right;
+}
+
+/* line 64, ../sass/partials/_damian.scss */
+#mini-panel-credits {
+  padding: 20px 0 20px 0;
+  position: relative;
+  text-align: center;
+  font-size: 0.8em;
+  background: #000;
+  color: #ffba00;
+  width: 100% !important;
+}
+/* line 72, ../sass/partials/_damian.scss */
+#mini-panel-credits .credits-region {
+  position: relative;
+}
+/* line 74, ../sass/partials/_damian.scss */
+#mini-panel-credits .credits-region .copyright {
+  padding-right: 5px;
+}
+/* line 77, ../sass/partials/_damian.scss */
+#mini-panel-credits .credits-region .equality-statement {
+  padding-left: 5px;
+}
+/* line 79, ../sass/partials/_damian.scss */
+#mini-panel-credits .credits-region .equality-statement:before {
+  content: "\00b7";
+  font-size: 40px;
+  line-height: 0;
+  padding-right: 10px;
+  vertical-align: middle;
+}
+/* line 91, ../sass/partials/_damian.scss */
+#mini-panel-credits .pane-menu-menu-footer ul.menu li,
+#mini-panel-credits .pane-system-user-menu ul.menu li {
+  display: inline-block;
+  padding: 0 10px;
+}
+/* line 94, ../sass/partials/_damian.scss */
+#mini-panel-credits .pane-menu-menu-footer ul.menu li a,
+#mini-panel-credits .pane-system-user-menu ul.menu li a {
+  font-size: 0.9em;
+  padding: 0;
+}
+/* line 97, ../sass/partials/_damian.scss */
+#mini-panel-credits .pane-menu-menu-footer ul.menu li a.active, #mini-panel-credits .pane-menu-menu-footer ul.menu li a:hover, #mini-panel-credits .pane-menu-menu-footer ul.menu li a:focus,
+#mini-panel-credits .pane-system-user-menu ul.menu li a.active,
+#mini-panel-credits .pane-system-user-menu ul.menu li a:hover,
+#mini-panel-credits .pane-system-user-menu ul.menu li a:focus {
+  background-color: transparent;
+  text-decoration: underline;
+}
+/* line 108, ../sass/partials/_damian.scss */
+#mini-panel-credits .pane-menu-menu-footer ul.menu {
+  float: left;
+  padding-left: 40px;
+}
+/* line 114, ../sass/partials/_damian.scss */
+#mini-panel-credits .pane-system-user-menu ul.menu {
+  float: right;
+  padding-right: 40px;
+}
+/* line 119, ../sass/partials/_damian.scss */
+#mini-panel-credits .contextual-links-wrapper {
+  display: none;
+}
+
+/* line 124, ../sass/partials/_damian.scss */
+#block-panels-mini-credits {
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  min-width: 100%;
+}
+
+/* SESSIONS ------------------------------------------------------------ */
+/* line 135, ../sass/partials/_damian.scss */
+.view-display-id-sessions_page table.cols-2 tr {
+  /* background: #ff0; */
+  border: thin solid black;
+  padding-bottom: 20px !important;
+  margin-bottom: 20px !important;
+}
+
+/*ESTEBAN*/
+/* line 7, ../sass/partials/_esteban.scss */
+p {
+  font-family: 'Josefin Sans', "Arial Narrow", Arial, sans-serif;
+  font-weight: 400;
+  font-size: 1.5em;
+  letter-spacing: 0.02em;
+  line-height: normal;
+}
+
+/* EVENTS PAGE COPY */
+/* line 17, ../sass/partials/_esteban.scss */
+tbody a {
+  font-family: 'Josefin Sans', "Arial Narrow", Arial, sans-serif;
+  font-weight: 400;
+  font-size: 1.2em;
+}
+/* line 22, ../sass/partials/_esteban.scss */
+tbody p {
+  font-family: 'Josefin Sans', "Arial Narrow", Arial, sans-serif;
+  font-weight: 400;
+  font-size: 1.2em;
+}
+
+/* NAVIGATION */
+/* line 32, ../sass/partials/_esteban.scss */
+.active-trail .active {
+  background-color: #fff;
+  min-height: 100px;
+}
+/* line 35, ../sass/partials/_esteban.scss */
+.active-trail .active a {
+  color: #2e7ac7;
+}
+
+/* line 41, ../sass/partials/_esteban.scss */
+.navbar {
+  min-width: 100%;
+  top: -20px;
+}
+
+/* line 47, ../sass/partials/_esteban.scss */
+.navbar-brand a {
+  padding-top: 5px;
+  margin-top: 15px;
+  vertical-align: bottom !important;
+}
+
+/* line 57, ../sass/partials/_esteban.scss */
+header.navbar .navbar-header a {
+  font-family: 'Josefin Sans', "Arial Narrow", Arial, sans-serif;
+  font-weight: normal;
+  font-size: 2.2em;
+  color: #fff;
+  text-transform: capitalize;
+}
+/* line 67, ../sass/partials/_esteban.scss */
+header.navbar .nav.sm-collapsible > li {
+  margin-left: 0;
+}
+/* line 69, ../sass/partials/_esteban.scss */
+header.navbar .nav.sm-collapsible > li a {
+  padding-left: 20px;
+}
+/* line 74, ../sass/partials/_esteban.scss */
+header.navbar .nav > li {
+  margin-left: 10px;
+}
+/* line 76, ../sass/partials/_esteban.scss */
+header.navbar .nav > li:first-of-type {
+  margin-left: 0;
+}
+/* line 79, ../sass/partials/_esteban.scss */
+header.navbar .nav > li > a {
+  font-family: 'Josefin Sans', "Arial Narrow", Arial, sans-serif;
+  font-weight: normal;
+  font-size: 2.2em;
+  color: #fff;
+  text-transform: capitalize;
+}
+
+/* line 91, ../sass/partials/_esteban.scss */
+.navbar-default {
+  background-color: #2e7ac7;
+  min-height: 100px;
+}
+
+/* line 100, ../sass/partials/_esteban.scss */
+.panels-flexible-row .panels-flexible-row-3-4 .panels-flexible-row-last .clearfix .row {
+  min-width: 100%;
+}
+
+/* line 108, ../sass/partials/_esteban.scss */
+.footer .container {
+  margin-bottom: 20px;
+  padding-top: 0px;
+}
+
+/**
+ * Kory's CoderDojo custom css
+ */
+/* line 5, ../sass/partials/_kory.scss */
+.session-wrap {
+  padding: 0 75px;
+  position: relative;
+}
+
+/* line 9, ../sass/partials/_kory.scss */
+.cal-icons {
+  padding: 6px 0 0 0;
+  border: 1px black solid;
+  border-radius: 3px;
+  background: white;
+  font-size: 1.2em;
+  text-align: center;
+  margin: auto;
+  margin-bottom: 10px;
+  float: left;
+}
+/* line 19, ../sass/partials/_kory.scss */
+.cal-icons h6 {
+  font-weight: bold;
+  text-transform: uppercase;
+  margin: 0 0 5px;
+}
+/* line 24, ../sass/partials/_kory.scss */
+.cal-icons span {
+  display: block;
+  background-color: #ffba00;
+  padding: 12px;
+  font-weight: bold;
+}
+
+/* line 32, ../sass/partials/_kory.scss */
+#btn-row .cal-icons {
+  width: auto;
+  padding: 6px 0 0 0;
+  background-color: white;
+  border-radius: 3px;
+}
+/* line 37, ../sass/partials/_kory.scss */
+#btn-row .cal-icons span {
+  background-color: rgba(51, 153, 51, 0.8);
+}
+
+/* line 43, ../sass/partials/_kory.scss */
+.session-list .cal-icons {
+  width: 90px;
+}
+/* line 47, ../sass/partials/_kory.scss */
+.session-list li + li {
+  margin-top: 30px;
+  padding-top: 30px;
+  border-top: 1px solid black;
+}
+/* line 52, ../sass/partials/_kory.scss */
+.session-list li:nth-of-type(n+3) {
+  margin-top: 15px;
+}
+/* line 56, ../sass/partials/_kory.scss */
+.session-list p {
+  font-size: 1.25em;
+  line-height: 1.25em;
+}
+/* line 60, ../sass/partials/_kory.scss */
+.session-list .btn {
+  float: right;
+  position: absolute;
+  right: 75px;
+  bottom: 10px;
+  background: rgba(51, 153, 51, 0.8);
+  font-size: 0.8em;
+  -webkit-transition: all 0.3s ease-out;
+  /* Android 2.1+, Chrome 1-25, iOS 3.2-6.1, Safari 3.2-6  */
+  transition: all 0.3s ease-out;
+  /* Chrome 26, Firefox 16+, iOS 7+, IE 10+, Opera, Safari 6.1+  */
+}
+/* line 69, ../sass/partials/_kory.scss */
+.session-list .btn:hover {
+  background: #339933;
+}
+/* line 72, ../sass/partials/_kory.scss */
+.session-list .btn a {
+  color: white;
+}
+
+/* line 78, ../sass/partials/_kory.scss */
+#event-buttons {
+  margin-top: 25px;
+  text-align: left;
+}
+
+/* line 83, ../sass/partials/_kory.scss */
+footer .btn {
+  margin-left: 0;
+}
+/* line 85, ../sass/partials/_kory.scss */
+footer .btn + .btn {
+  margin-left: 20px;
+}
+
+@media only screen and (max-width: 500px) {
+  /* line 92, ../sass/partials/_kory.scss */
+  .session-wrap {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  /* line 97, ../sass/partials/_kory.scss */
+  .session-list .btn {
+    right: 15px;
+  }
+
+  /* line 102, ../sass/partials/_kory.scss */
+  footer .btn {
+    margin-bottom: 15px;
+  }
+  /* line 104, ../sass/partials/_kory.scss */
+  footer .btn + .btn {
+    margin-left: 0;
+  }
+}
+@media only screen and (max-width: 767px) {
+  /* line 112, ../sass/partials/_kory.scss */
+  .navbar-nav {
+    width: 100%;
+    margin: 0;
+  }
+  /* line 115, ../sass/partials/_kory.scss */
+  .navbar-nav li {
+    padding: 0;
+  }
+
+  /* line 120, ../sass/partials/_kory.scss */
+  .session-list li {
+    width: 100%;
+  }
+}
+@media only screen and (max-width: 1028px) {
+  /* line 129, ../sass/partials/_kory.scss */
+  footer .view-featured-session .container {
+    width: 100%;
+  }
+}
+@media only screen and (min-width: 768px) {
+  /* line 137, ../sass/partials/_kory.scss */
+  #event-buttons {
+    margin-top: 10px;
+    text-align: right;
+  }
+}
+@media only screen and (min-width: 992px) {
+  /* line 146, ../sass/partials/_kory.scss */
+  .session-list li + li {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: none;
+  }
+}
+/**
+ * Coder Dojo custom css
+ */
+/* line 6, ../sass/partials/_style.scss */
+body .navbar-tray-open {
+  padding-top: 80px !important;
+}
+/* line 13, ../sass/partials/_style.scss */
+body .navbar-default .navbar-nav > li > a:hover, body .navbar-default .navbar-nav > li > a:focus {
+  background-color: rgba(51, 153, 51, 0.8) !important;
+}
+/* line 19, ../sass/partials/_style.scss */
+body .navbar-default .navbar-nav ul {
+  background-color: #2e7ac7;
+}
+
+/* line 26, ../sass/partials/_style.scss */
+.navbar-collapse {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/* line 31, ../sass/partials/_style.scss */
+.btn-lg {
+  font-size: 18px;
+}
+
+/* line 36, ../sass/partials/_style.scss */
+header#navbar {
+  border-width: 0;
+  border-bottom: 1px solid #000000;
+  border-radius: 0;
+  padding-bottom: 7px;
+  padding-top: 9px;
+}
+/* line 42, ../sass/partials/_style.scss */
+header#navbar.fixed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1001;
+  width: 100%;
+  margin-bottom: 0;
+  margin-top: 0;
+}
+/* line 50, ../sass/partials/_style.scss */
+header#navbar.fixed > + div.main-container {
+  margin-top: 100px;
+  padding-top: 30px;
+}
+/* line 58, ../sass/partials/_style.scss */
+header#navbar.navbar .nav > li > a {
+  line-height: 12px;
+}
+/* line 64, ../sass/partials/_style.scss */
+header#navbar > .container {
+  max-width: 1500px;
+}
+
+/* line 74, ../sass/partials/_style.scss */
+.navbar-administration.navbar-tray-open header#navbar.fixed {
+  margin-bottom: 100px;
+  top: 79px;
+}
+/* line 83, ../sass/partials/_style.scss */
+.navbar-administration header#navbar.fixed {
+  top: 39px;
+}
+
+/* line 91, ../sass/partials/_style.scss */
+#navbar-administration .navbar-tab a {
+  border-width: 0;
+}
+
+/* line 98, ../sass/partials/_style.scss */
+.navbar .logo {
+  margin: 7px 0 0 0;
+  text-decoration: none;
+}
+/* line 101, ../sass/partials/_style.scss */
+.navbar .logo:hover {
+  text-decoration: none;
+}
+/* line 104, ../sass/partials/_style.scss */
+.navbar .logo img {
+  max-width: 185px;
+  width: 100%;
+}
+/* line 109, ../sass/partials/_style.scss */
+.navbar .byline {
+  color: #fff;
+  display: inline-block;
+  font-family: "Open Sans", "Segoe UI", "Helvetica", sans-serif;
+  font-size: 24px;
+  vertical-align: sub;
+}
+/* line 118, ../sass/partials/_style.scss */
+.navbar .nav > li > a {
+  margin-left: 0;
+}
+
+/* line 126, ../sass/partials/_style.scss */
+button.navbar-toggle {
+  margin-bottom: 0;
+}
+
+/* line 132, ../sass/partials/_style.scss */
+.navbar-toggle .icon-bar {
+  width: 29px;
+  height: 4px;
+  border-radius: 0px;
+  background-color: white !important;
+}
+
+/* line 140, ../sass/partials/_style.scss */
+.navbar-nav {
+  margin-top: 19px;
+}
+/* line 142, ../sass/partials/_style.scss */
+.navbar-nav li {
+  padding-right: 4px;
+  padding-left: 4px;
+}
+
+/* line 149, ../sass/partials/_style.scss */
+.active-trail .active {
+  min-height: 0 !important;
+}
+
+/* line 154, ../sass/partials/_style.scss */
+.main-container {
+  padding-bottom: 30px;
+}
+
+/* line 158, ../sass/partials/_style.scss */
+.label {
+  color: #666666;
+}
+
+/* line 164, ../sass/partials/_style.scss */
+.panels-flexible-row:not(.panels-flexible-row-first) + .panels-flexible-row {
+  margin-top: 50px;
+}
+
+/* line 171, ../sass/partials/_style.scss */
+.staff-list li + li {
+  margin-top: 50px;
+}
+/* line 175, ../sass/partials/_style.scss */
+.staff-list h3 {
+  margin-top: 0;
+}
+/* line 178, ../sass/partials/_style.scss */
+.staff-list img {
+  margin-bottom: 20px;
+}
+
+/* line 183, ../sass/partials/_style.scss */
+#event-text {
+  font-size: 1.3em !important;
+  line-height: 1.3em !important;
+}
+/* line 186, ../sass/partials/_style.scss */
+#event-text h3 {
+  margin-top: 0;
+}
+
+/* line 194, ../sass/partials/_style.scss */
+#btn-row .row + #btn-row .row {
+  margin-top: 20px;
+}
+
+/* line 203, ../sass/partials/_style.scss */
+.crm-container a.btn {
+  color: #fff;
+  padding: 6px 16px 3px;
+}
+/* line 206, ../sass/partials/_style.scss */
+.crm-container a.btn:link, .crm-container a.btn:visited {
+  color: #fff;
+  padding: 6px 16px 3px;
+}
+/* line 213, ../sass/partials/_style.scss */
+.crm-container .header-dark {
+  font-weight: normal;
+}
+
+/* line 218, ../sass/partials/_style.scss */
+.create_account_link-top {
+  float: right;
+}
+
+/* line 223, ../sass/partials/_style.scss */
+.view-sponsors-view .views-row {
+  overflow: auto;
+}
+/* line 225, ../sass/partials/_style.scss */
+.view-sponsors-view .views-row:not(.views-row-first) {
+  margin-top: 20px;
+}
+/* line 231, ../sass/partials/_style.scss */
+.view-sponsors-view .field-name-field-image.field-type-atom-reference picture {
+  margin: 0 auto;
+  height: 100px;
+  position: relative;
+  width: 150px;
+}
+/* line 236, ../sass/partials/_style.scss */
+.view-sponsors-view .field-name-field-image.field-type-atom-reference picture img {
+  max-height: 100px;
+  max-width: 150px;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+}
+
+/* line 253, ../sass/partials/_style.scss */
+.view-staff-view .views-field-title h2 {
+  margin-top: 0;
+}
+
+/* line 262, ../sass/partials/_style.scss */
+.navbar-default .navbar-nav > .active a {
+  background-color: teal;
+}
+/* line 264, ../sass/partials/_style.scss */
+.navbar-default .navbar-nav > .active a:hover, .navbar-default .navbar-nav > .active a:focus {
+  background-color: teal;
+}
+
+/* line 276, ../sass/partials/_style.scss */
+.page-about .field-type-location .location.vcard {
+  font-family: "Open Sans";
+  font-size: 20px;
+}
+/* line 284, ../sass/partials/_style.scss */
+.page-about .map-row .panel-pane.col-sm-9 {
+  padding-left: 0;
+}
+/* line 291, ../sass/partials/_style.scss */
+.page-about .staff-row .views-field-field-image.staff-image {
+  padding-left: 0;
+  float: left;
+  padding-right: 25px;
+  padding-bottom: 5px;
+}
+
+/* line 302, ../sass/partials/_style.scss */
+.front .slider-row {
+  margin-bottom: 50px;
+}
+/* line 310, ../sass/partials/_style.scss */
+.front .panel-flexible .row.volunteer-row > .panels-flexible-row-inside > .panels-flexible-region-last > .panels-flexible-region-inside {
+  padding-right: 0;
+}
+/* line 312, ../sass/partials/_style.scss */
+.front .panel-flexible .row.volunteer-row > .panels-flexible-row-inside > .panels-flexible-region-last > .panels-flexible-region-inside.panels-flexible-region-inside-last {
+  padding-left: 50px;
+}
+/* line 321, ../sass/partials/_style.scss */
+.front .panel-flexible .row > .panels-flexible-row-inside > .panels-flexible-region-first > .panels-flexible-region-inside {
+  padding-left: 0;
+  padding-right: 50px;
+}
+/* line 327, ../sass/partials/_style.scss */
+.front .panel-flexible .row .pane-title {
+  margin-top: 0;
+}
+/* line 332, ../sass/partials/_style.scss */
+.front .panel-flexible .row .pane-content a.btn {
+  font-family: "Open Sans";
+  font-weight: normal;
+}
+/* line 340, ../sass/partials/_style.scss */
+.front .pane-title {
+  margin-bottom: 20px;
+}
+/* line 343, ../sass/partials/_style.scss */
+.front p {
+  font-size: 1.9em;
+  margin-bottom: 50px;
+}
+/* line 348, ../sass/partials/_style.scss */
+.front footer p {
+  margin-bottom: 0;
+}
+
+/* line 357, ../sass/partials/_style.scss */
+.panel-flexible .pane-content .btn.btn-info {
+  font-family: "Open Sans";
+  font-weight: normal;
+}
+
+/* line 366, ../sass/partials/_style.scss */
+.node-type-page .field-type-atom-reference {
+  margin-bottom: 40px;
+}
+
+/* line 376, ../sass/partials/_style.scss */
+.page-donate .pane-custom.pane-2 .pane-content p:last-of-type {
+  margin-top: 25px;
+}
+/* line 382, ../sass/partials/_style.scss */
+.page-donate .pane-custom h2 {
+  margin-top: 0;
+}
+/* line 386, ../sass/partials/_style.scss */
+.page-donate .panels-flexible-region-11-financial___right-inside {
+  padding-right: 30px;
+}
+/* line 390, ../sass/partials/_style.scss */
+.page-donate .panels-flexible-row-last .panels-flexible-region-inside {
+  padding-right: 70px;
+}
+
+/* line 397, ../sass/partials/_style.scss */
+#mini-panel-credits .panels-flexible-region-inside {
+  padding-right: 0;
+}
+
+/* line 405, ../sass/partials/_style.scss */
+#navbar.stacked .container .navbar-header {
+  float: none;
+  margin-left: auto;
+  margin-right: auto;
+  width: 491px;
+}
+/* line 412, ../sass/partials/_style.scss */
+#navbar.stacked .navbar-header a {
+  margin-right: 0;
+}
+/* line 415, ../sass/partials/_style.scss */
+#navbar.stacked .navbar-collapse {
+  margin-left: auto;
+  margin-right: auto;
+}
+/* line 419, ../sass/partials/_style.scss */
+#navbar.stacked .navbar-nav {
+  margin-top: 10px;
+}
+/* line 422, ../sass/partials/_style.scss */
+#navbar.stacked .navbar-nav > li > a {
+  padding-bottom: 10px;
+  padding-top: 10px;
+}
+/* line 430, ../sass/partials/_style.scss */
+#navbar .navbar-header a {
+  margin-right: 15px;
+  padding-right: 0;
+}
+
+/* line 437, ../sass/partials/_style.scss */
+#masquerade-block-1 {
+  display: inline-block;
+}
+/* line 439, ../sass/partials/_style.scss */
+#masquerade-block-1 input[type="text"] {
+  width: 300px;
+}
+/* line 442, ../sass/partials/_style.scss */
+#masquerade-block-1 #edit-masquerade-user-field,
+#masquerade-block-1 .input-group-addon {
+  display: inline-block;
+}
+/* line 446, ../sass/partials/_style.scss */
+#masquerade-block-1 form,
+#masquerade-block-1 .input-group-addon {
+  width: auto;
+}
+/* line 450, ../sass/partials/_style.scss */
+#masquerade-block-1 .btn {
+  background-color: #ffba00;
+  padding: 2px 10px;
+}
+/* line 454, ../sass/partials/_style.scss */
+#masquerade-block-1 .form-control,
+#masquerade-block-1 .input-group-addon {
+  height: auto;
+  padding: 4px 8px;
+}
+/* line 459, ../sass/partials/_style.scss */
+#masquerade-block-1 .input-group-addon {
+  margin-right: 20px;
+  padding-top: 5px;
+}
+/* line 463, ../sass/partials/_style.scss */
+#masquerade-block-1 .description {
+  margin-top: 10px;
+}
+
+/* line 469, ../sass/partials/_style.scss */
+.page-user-register #editrow-custom_60 {
+  display: none;
+}
+/* line 474, ../sass/partials/_style.scss */
+.page-user-register ul.tabs--primary.nav-tabs {
+  display: none;
+}
+/* line 479, ../sass/partials/_style.scss */
+.page-user-register .help-block {
+  color: #666666;
+}
+/* line 483, ../sass/partials/_style.scss */
+.page-user-register #edit-autoassignrole-user legend {
+  display: none;
+}
+/* line 489, ../sass/partials/_style.scss */
+.page-user-register .crm-container .crm-section .content {
+  margin-left: 0;
+}
+/* line 492, ../sass/partials/_style.scss */
+.page-user-register .crm-container .crm-section .label {
+  color: #3e3f3a;
+  float: left;
+  font-family: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  margin-top: 7px;
+  text-align: left;
+  width: 17%;
+}
+/* line 500, ../sass/partials/_style.scss */
+.page-user-register .crm-container .crm-section .label label {
+  font-weight: bold;
+}
+/* line 505, ../sass/partials/_style.scss */
+.page-user-register .crm-container fieldset {
+  border: none;
+}
+/* line 507, ../sass/partials/_style.scss */
+.page-user-register .crm-container fieldset legend {
+  font-size: 18px;
+  font-size: 1.8rem;
+  line-height: normal;
+}
+/* line 513, ../sass/partials/_style.scss */
+.page-user-register #user-register-form input {
+  width: auto;
+}
+/* line 517, ../sass/partials/_style.scss */
+.page-user-register #editrow-gender_id {
+  width: 100%;
+}
+/* line 520, ../sass/partials/_style.scss */
+.page-user-register #profilewrap16 {
+  position: relative;
+}
+/* line 522, ../sass/partials/_style.scss */
+.page-user-register #profilewrap16 .label {
+  margin-top: 0;
+}
+/* line 525, ../sass/partials/_style.scss */
+.page-user-register #profilewrap16 label {
+  margin-top: 1px;
+  padding-left: 3px;
+}
+/* line 529, ../sass/partials/_style.scss */
+.page-user-register #profilewrap16 #helprow-custom_46 {
+  position: absolute;
+  left: 10px;
+  top: 230px;
+}
+/* line 534, ../sass/partials/_style.scss */
+.page-user-register #profilewrap16 .crm-section {
+  margin-bottom: 5px;
+  margin-top: 5px;
+}
+/* line 537, ../sass/partials/_style.scss */
+.page-user-register #profilewrap16 .crm-section:first-of-type {
+  margin-top: 0;
+}
+/* line 540, ../sass/partials/_style.scss */
+.page-user-register #profilewrap16 .crm-section:last-of-type {
+  margin-bottom: 0;
+}
+/* line 547, ../sass/partials/_style.scss */
+.page-user-register #editrow-gender_id .label,
+.page-user-register #editrow-gender_id .edit-value,
+.page-user-register #editrow-gender_id input,
+.page-user-register #editrow-gender_id label,
+.page-user-register #editrow-custom_46 .label,
+.page-user-register #editrow-custom_46 .edit-value,
+.page-user-register #editrow-custom_46 input,
+.page-user-register #editrow-custom_46 label {
+  float: left;
+}
+/* line 554, ../sass/partials/_style.scss */
+.page-user-register #editrow-gender_id input:nth-of-type(n+2),
+.page-user-register #editrow-custom_46 input:nth-of-type(n+2) {
+  clear: left;
+}
+
+/* line 563, ../sass/partials/_style.scss */
+.page-crm-event .crm-container .crm-accordion-header {
+  display: none !important;
+}
+
+/* line 571, ../sass/partials/_style.scss */
+#node-22 a.btn {
+  display: inline-block;
+  font-size: 16px;
+  font-size: 1.6rem;
+  line-height: normal;
+  margin-top: 25px;
+}
+
+/* line 579, ../sass/partials/_style.scss */
+.alert-success {
+  color: #000000;
+}
+
+/* line 586, ../sass/partials/_style.scss */
+.page-admin-people-create #edit-account .form-item-name input, .page-admin-people-create #edit-account .form-item-mail input {
+  width: auto;
+}
+/* line 592, ../sass/partials/_style.scss */
+.page-admin-people-create #crm-profile-block input[type="radio"], .page-admin-people-create #crm-profile-block input[type="checkbox"] {
+  vertical-align: sub;
+}
+/* line 594, ../sass/partials/_style.scss */
+.page-admin-people-create #crm-profile-block input[type="radio"] + label, .page-admin-people-create #crm-profile-block input[type="checkbox"] + label {
+  padding-left: 3px;
+}
+/* line 599, ../sass/partials/_style.scss */
+.page-admin-people-create #editrow-custom_60 {
+  display: none;
+}
+
+/* line 605, ../sass/partials/_style.scss */
+.page-eform-submit-volunteer-form #edit-field-full-name {
+  margin-top: 25px;
+}
+
+/* line 610, ../sass/partials/_style.scss */
+td[id^="Event_Details__"] {
+  display: none;
+}
+
+/* line 615, ../sass/partials/_style.scss */
+.page-civicrm-event-info .register_link-top {
+  margin-bottom: 10px;
+  margin-left: 10px;
+}
+/* line 619, ../sass/partials/_style.scss */
+.page-civicrm-event-info .crm-section {
+  font-family: 'Josefin Sans', "Arial Narrow", Arial, sans-serif;
+  font-size: 20px;
+  font-size: 2rem;
+  line-height: normal;
+}
+/* line 622, ../sass/partials/_style.scss */
+.page-civicrm-event-info .crm-section p {
+  font-size: 16px;
+  font-size: 1.6rem;
+  line-height: normal;
+}
+
+/* line 629, ../sass/partials/_style.scss */
+.pane-sponsors-view-panel-pane-1 h2.pane-title {
+  margin-bottom: 20px;
+}
+
+/* line 634, ../sass/partials/_style.scss */
+.donate-top-left-container .col-sm-12 {
+  padding-left: 0;
+}
+
+/* line 640, ../sass/partials/_style.scss */
+.crm-socialnetwork div.clear + div a {
+  /* These are technically the same, but use both */
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  -ms-word-break: break-all;
+  /* This is the dangerous one in WebKit, as it breaks things wherever */
+  word-break: break-all;
+  /* Instead use this non-standard one: */
+  word-break: break-word;
+  /* Adds a hyphen where the word breaks, if supported (No Blink) */
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
+
+/* line 662, ../sass/partials/_style.scss */
+.page-user-register-volunteer #profilewrap16 {
+  display: none;
+}
+
+/* line 667, ../sass/partials/_style.scss */
+ol#mail-help-modal-list {
+  font-size: 18px;
+}
+/* line 670, ../sass/partials/_style.scss */
+ol#mail-help-modal-list li p {
+  font-size: 18px;
+}
+
+@media only screen and (max-width: 1169px) {
+  /* line 679, ../sass/partials/_style.scss */
+  #mini-panel-credits .credits-region .copyright {
+    display: block;
+  }
+  /* line 682, ../sass/partials/_style.scss */
+  #mini-panel-credits .credits-region .equality-statement {
+    display: block;
+    margin-top: 10px;
+  }
+  /* line 685, ../sass/partials/_style.scss */
+  #mini-panel-credits .credits-region .equality-statement:before {
+    content: "";
+  }
+  /* line 691, ../sass/partials/_style.scss */
+  #mini-panel-credits .social-links .pane-content {
+    top: 15px;
+  }
+}
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+  /* line 699, ../sass/partials/_style.scss */
+  #navbar {
+    padding-top: 28px;
+  }
+
+  /* line 702, ../sass/partials/_style.scss */
+  .navbar-header {
+    margin-right: auto;
+    margin-left: auto;
+    float: none;
+    text-align: center;
+  }
+
+  /* line 709, ../sass/partials/_style.scss */
+  .navbar .logo {
+    position: relative;
+  }
+  /* line 714, ../sass/partials/_style.scss */
+  .navbar .nav > li > a {
+    font-size: 1.65em;
+  }
+
+  /* line 720, ../sass/partials/_style.scss */
+  .navbar-nav {
+    width: 100%;
+    text-align: center;
+  }
+  /* line 723, ../sass/partials/_style.scss */
+  .navbar-nav > li {
+    display: inline-block;
+    float: none;
+  }
+
+  /* line 730, ../sass/partials/_style.scss */
+  #mini-panel-credits .social-links .pane-content {
+    top: 27px;
+  }
+}
+@media only screen and (min-width: 600px) {
+  /* line 738, ../sass/partials/_style.scss */
+  #event-text {
+    font-size: 1.55em !important;
+    line-height: 1.55em !important;
+  }
+}
+@media only screen and (min-width: 768px) {
+  /* line 746, ../sass/partials/_style.scss */
+  .navbar .logo {
+    height: 75px;
+    margin-top: 2px;
+  }
+  /* line 749, ../sass/partials/_style.scss */
+  .navbar .logo img {
+    max-width: 264px;
+  }
+  /* line 752, ../sass/partials/_style.scss */
+  .navbar .logo picture {
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+  }
+  /* line 757, ../sass/partials/_style.scss */
+  .navbar .logo .byline {
+    padding-top: 9px;
+    vertical-align: middle;
+  }
+
+  /* line 763, ../sass/partials/_style.scss */
+  .navbar-nav {
+    float: right;
+  }
+  /* line 765, ../sass/partials/_style.scss */
+  .navbar-nav li {
+    padding-right: 0;
+    padding-left: 0;
+  }
+
+  /* line 771, ../sass/partials/_style.scss */
+  .staff-list img {
+    margin-bottom: 0;
+  }
+
+  /* line 775, ../sass/partials/_style.scss */
+  #event-text {
+    font-size: 2em !important;
+    line-height: 1.9em !important;
+  }
+}
+@media only screen and (max-width: 767px) {
+  /* line 784, ../sass/partials/_style.scss */
+  header#navbar.navbar-default {
+    min-height: 0;
+    padding-bottom: 0;
+    padding-top: 4px;
+  }
+  /* line 789, ../sass/partials/_style.scss */
+  header#navbar.navbar-default > .container > .navbar-header {
+    min-height: 0;
+    padding-bottom: 12px;
+  }
+}
+@media only screen and (max-width: 457px) {
+  /* line 800, ../sass/partials/_style.scss */
+  .navbar-toggle {
+    float: none;
+    position: absolute;
+    right: 0;
+    top: 25px;
+  }
+}
+@media only screen and (max-width: 991px) {
+  /* line 812, ../sass/partials/_style.scss */
+  .navbar .nav > li > a {
+    font-size: 1.6em !important;
+  }
+}
+@media only screen and (min-width: 1090px) {
+  /* line 824, ../sass/partials/_style.scss */
+  .navbar .nav > li > a {
+    font-size: 2em !important;
+  }
+}
+@media only screen and (min-width: 1170px) {
+  /* NAV*/
+  /* line 836, ../sass/partials/_style.scss */
+  .navbar.container > .container {
+    margin: 0 auto;
+  }
+  /* line 841, ../sass/partials/_style.scss */
+  .navbar.container-fluid > .container-fluid {
+    margin: 0 auto;
+  }
+  /* line 847, ../sass/partials/_style.scss */
+  .navbar .nav > li > a {
+    font-size: 2.2em !important;
+  }
+
+  /* line 854, ../sass/partials/_style.scss */
+  #event-text h3 {
+    font-size: 1.2em;
+    line-height: 1.2em;
+  }
+}
+@media only screen and (max-width: 991px) {
+  /* line 863, ../sass/partials/_style.scss */
+  #event-text h3 {
+    font-size: 20px;
+    font-size: 2rem;
+    line-height: 1;
+  }
+
+  /* line 868, ../sass/partials/_style.scss */
+  #mini-panel-footer .panels-flexible-region-10-featured_event {
+    width: 100%;
+  }
+  /* line 870, ../sass/partials/_style.scss */
+  #mini-panel-footer .panels-flexible-region-10-featured_event .row {
+    margin: 0;
+  }
+}
+@media only screen and (max-width: 479px) {
+  /* line 878, ../sass/partials/_style.scss */
+  #block-panels-mini-footer {
+    height: 315px;
+  }
+
+  /* line 883, ../sass/partials/_style.scss */
+  #mini-panel-credits .credits-region .copyright {
+    display: block;
+    margin-top: 20px;
+  }
+  /* line 887, ../sass/partials/_style.scss */
+  #mini-panel-credits .credits-region .equality-statement {
+    display: block;
+    margin-bottom: 20px;
+  }
+  /* line 893, ../sass/partials/_style.scss */
+  #mini-panel-credits .social-links .pane-content {
+    top: 25px;
+  }
+  /* line 899, ../sass/partials/_style.scss */
+  #mini-panel-credits .pane-system-user-menu ul.menu {
+    float: none;
+    padding-right: 0;
+  }
+
+  /* line 907, ../sass/partials/_style.scss */
+  #event-text h3 {
+    font-size: 18px;
+    font-size: 1.8rem;
+    line-height: 1;
+  }
+
+  /* line 914, ../sass/partials/_style.scss */
+  .page-user-register .crm-container .crm-section .label {
+    width: 36%;
+  }
+  /* line 917, ../sass/partials/_style.scss */
+  .page-user-register .crm-container .crm-section input {
+    max-width: 229px;
+  }
+
+  /* line 923, ../sass/partials/_style.scss */
+  .panels-flexible-region-11-center {
+    width: 100%;
+  }
+
+  /* line 927, ../sass/partials/_style.scss */
+  .donate-top-left-container .col-xs-3 {
+    display: block !important;
+    float: right;
+    padding-right: 0;
+  }
+}
+
+/*# sourceMappingURL=styles.css.map */

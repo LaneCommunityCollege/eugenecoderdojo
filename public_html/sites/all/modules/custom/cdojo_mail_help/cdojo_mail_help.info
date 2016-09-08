@@ -1,0 +1,3 @@
+name = cdojo_mail_help
+core = 7.x
+dependencies[] = ctools

@@ -1,0 +1,9 @@
+/**
+ * @file
+ * Defines a field for attaching country-specific addresses to entities.
+ */
+
+/* align the widgets right/left of each other */
+.views-widget-filter-field_address_full_country_admin .form-item {
+  display: inline-block;
+}

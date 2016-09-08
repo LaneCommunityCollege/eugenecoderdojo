@@ -1,0 +1,311 @@
+<?php
+/**
+ * @file
+ * Code for the cdojo_base feature.
+ */
+
+include_once 'cdojo_base.features.inc';
+
+function cdojo_base_form_alter(&$form, &$form_state, $form_id){
+  // Turn on for assisting with debugging/altering forms.
+  /*if (module_exists('devel_debug_log') && $form_id != 'devel_debug_log_clear_log_form' && $form_id != 'masquerade_block_1') {
+//  	drupal_set_message('$form_id = ' . $form_id);
+    ddl(
+  		array(
+  			'$form' => $form,
+        '$form_state' => $form_state,
+  		),
+  		'cdojo_base_form_alter: ' . $form_id
+  	);
+  }*/
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function cdojo_base_form_user_register_form_alter(&$form, &$form_state, $form_id) {
+  $current_path = current_path();
+  if(strpos($current_path, 'volunteer') !== FALSE){
+    drupal_set_title(t('Become a Volunteer'));
+    $volunteer_markup = '<p>Volunteers are the lifeblood of our organization. If you are an industry professional, self-taught web-guru, educator, or general do-gooder, we would love to have you on board.</p>';
+    $volunteer_markup .= '<p>Our volunteers attend sessions and help budding programmers prepare for a bright future in today’s fastest growing industry (and build some really cool stuff along the way). You can make a positive impact on a child’s life by taking a couple of hours every week or month to share your expertise.</p>';
+    $volunteer_markup .= '<p>Mentoring is it’s own reward. Become a volunteer.</p>';
+    $volunteer_markup .= '<p>The first step to becoming a volunteer is to create an account below:</p>';
+    $form['volunteer_markup'] = array(
+      '#type' => 'markup',
+      '#markup' => $volunteer_markup,
+      '#weight' => -11,
+    );
+  }
+  else if (strpos($current_path, 'admin') !== FALSE) {
+    // Currently do nothing custom HERE for the admin/parent-child user creation pages [admin/people/create].
+    // Customization for this page is done in the hook_preprocess_page function instead.
+  }
+  else{
+    drupal_set_title(t('Become a Member - Create New Account'));
+    $age_markup = '<p>If you are under 18 a parent/guardian needs to create an account and register you for class sessions.</p>';
+    $form['age_markup'] = array(
+      '#type' => 'markup',
+      '#markup' => $age_markup,
+      '#weight' => -11,
+    );
+  }
+  if(isset($form['autoassignrole_user']['user_roles']['#type'])){
+    $form['autoassignrole_user']['user_roles']['#type'] = 'checkboxes';
+  }
+  if(isset($form['autoassignrole_user']['user_roles']['#title'])){
+    unset($form['autoassignrole_user']['user_roles']['#title']);
+  }
+  // Change 'pre' html tag around description to 'p'.
+  if(isset($form['autoassignrole_user']['user_roles']['#description'])){
+    $form['autoassignrole_user']['user_roles']['#description'] = preg_replace('/pre>/', 'p>', $form['autoassignrole_user']['user_roles']['#description']);
+  }
+  // Change &nbsp; in CiviCRM profile section area to <br> to put options on separate lines.
+  if (isset($form['civicrm-profile-register']['#markup'])) {
+    $search  = '&nbsp;';
+    $replace = '<br>';
+    $subject = $form['civicrm-profile-register']['#markup'];
+    $form['civicrm-profile-register']['#markup'] = str_replace($search, $replace, $subject);
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function cdojo_base_form_feedback_entityform_edit_form_alter(&$form, &$form_state, $form_id) {
+  unset($form['field_recommend_session'][LANGUAGE_NONE]['#options']['_none']);
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function cdojo_base_form_masquerade_block_1_alter(&$form, &$form_state, $form_id) {
+  $form['masquerade_user_field']['#attributes'] = array(
+    'placeholder' => 'Masquerade as username'
+  );
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function cdojo_base_form_volunteer_form_entityform_edit_form_alter(&$form, &$form_state, $form_id) {
+  global $user;
+  // Form is access controlled for non-anonymous users, so this should be redundant.
+  if ($user->uid != 0) {
+    // Set email to user account email.
+    $form['field_email'][LANGUAGE_NONE][0]['email']['#default_value'] = $user->mail;
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function cdojo_base_form_donations_equipment_other_entityform_edit_form_alter(&$form, &$form_state, $form_id) {
+  $form['actions']['submit']['#value'] = 'Send';
+  $form['actions']['submit']['#attributes'] = array('class' => array('btn', 'btn-info', 'btn-lg'));
+}
+
+/** change access callback to use custom permission to keep role volunteer users from seeing the volunteer application link */
+function cdojo_base_menu_alter(&$items){
+  $items['eform/submit/%entityform_empty']['access callback'] = 'cdojo_base_volunteer_path_change';
+  // Change subuser module "child users" tab to only show if the user can have child users.
+  $items['user/%user/subuser']['access callback'] = 'cdojo_base_subuser_ui_access_list_page_callback';
+}
+
+/**
+ * @param $type
+ * @param $entity_form_empty
+ * @return bool
+ *
+ *  custom permission to keep role volunteer users from seeing the volunteer application link
+ */
+function cdojo_base_volunteer_path_change($type, $entity_form_empty){
+  return entityform_access($type, $entity_form_empty) && !user_has_role(5);
+}
+
+/**
+ * Implements hook_menu().
+ */
+function cdojo_base_menu(){
+  $items['user/child-users'] = array(
+    'title' => 'Redirecting page',
+    'access arguments' => array('administer subusers'),
+    'page callback' => '_cdojo_base_child_user_path_redirect',
+  );
+  // Masquerade module hack - from https://www.drupal.org/node/695952
+  if(module_exists('masquerade')) {
+    $items['masquerade/unswitch'] = array(
+      'access callback' => 'masquerade_menu_access',
+      'access arguments' => array('unswitch'),
+      'page callback' => 'cdojo_base_masquerade_unswitch',
+      'page arguments' => array(),
+      'title' => 'Masquerade Switch Back',
+      'weight' => 100,
+      'menu_name' => 'management',
+      'type' => MENU_NORMAL_ITEM,
+    );
+  }
+  return $items;
+}
+
+/**
+ * Masquerade module hack.
+ *
+ * From https://www.drupal.org/node/695952.
+ * Creates "Masquerade switch back" link to use in menus that only displays if you are masquerading,
+ * allows switching back from suers that don't have the permissions to reach the switch back page.
+ */
+function cdojo_base_masquerade_unswitch(){
+  $token = drupal_get_token('masquerade/unswitch');
+  if (isset($token)) {
+    global $user;
+    $olduser = $user;
+    masquerade_switch_back();
+    drupal_set_message(t('You are no longer masquerading as !masq_as and are now logged in as !user.', array('!user' => theme('username', array('account' => $user)), '!masq_as' => theme('username', array('account' => $olduser)))));
+    drupal_goto($_SERVER['HTTP_REFERER']);
+  }
+  else {
+    drupal_access_denied();
+  }
+}
+
+function _cdojo_base_child_user_path_redirect(){
+  global $user;
+  if(isset($user->uid)){
+    drupal_goto('user/' . $user->uid . '/subuser');
+  }
+  else{
+    drupal_goto('user/');
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function cdojo_base_preprocess_node(&$vars){
+  $type = $vars['type'];
+  $view_mode = $vars['view_mode'];
+  // Wrap image in link.
+  if ($type == 'sponsor' && $view_mode == 'sponsor_row') {
+    $link = $vars['field_link'][0]['url'];
+    $vars['content']['field_image'][0]['#markup'] = l($vars['content']['field_image'][0]['#markup'], $link, array('html' => TRUE));
+    unset($vars['content']['field_link']);
+  }
+}
+
+/**
+ * Implements hook_entity_info().
+ */
+function cdojo_base_entity_info_alter(&$entity_info) {
+  $entity_info['node']['view modes']['front_page_slider'] = array(
+    'label' => t('Front Page Slider'),
+    'custom settings' => FALSE,
+  );
+  $entity_info['node']['view modes']['sponsor_row'] = array(
+    'label' => t('Sponsor Row'),
+    'custom settings' => FALSE,
+  );
+  $entity_info['fieldable_panels_pane']['view modes']['front_page_ctas'] = array(
+    'label' => t('Front Page CTAs'),
+    'custom settings' => TRUE,
+  );
+  $entity_info['fieldable_panels_pane']['view modes']['donate_portrait'] = array(
+    'label' => t('Donate Portrait'),
+    'custom settings' => TRUE,
+  );
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function cdojo_base_preprocess_page(&$vars) {
+  // Load and render main logo scald atom and pass to page for output.
+  if (!cdojo_base_page_is_admin_themed()) {
+    $atom_rendered = scald_render(23, 'header_logo');
+    $vars['logo_scald'] = $atom_rendered;
+  }
+  // Customize 'admin/people/create' page for parents creating child users.
+  if (isset($vars['page']['content']['system_main']['user_register']) && _user_is_parent()) {
+    drupal_set_title('Add child user');
+    $user_register_data = &$vars['page']['content']['system_main']['user_register'];
+    // Hide 'Subuser limit' field.
+    if (isset($user_register_data['field_subuser_limit'])) {
+      $user_register_data['field_subuser_limit']['#access'] = FALSE;
+    }
+    if (isset($user_register_data['account'])) {
+      if (isset($user_register_data['account']['status'])) {
+        $user_register_data['account']['status']['#access'] = FALSE;
+      }
+      if (isset($user_register_data['account']['notify'])) {
+        $user_register_data['account']['notify']['#access'] = FALSE;
+      }
+    }
+    if (isset($vars['page']['help']['system_help'])) {
+      $vars['page']['help']['system_help']['#markup'] = '<p>This web page allows parents to create new child users. Child user\'s email addresses and usernames must be unique.</p>';
+    }
+    $vars['child'] = TRUE;
+  }
+}
+
+function cdojo_base_page_is_admin_themed() {
+  global $theme;
+  if ($theme === variable_get('admin_theme', 'cdojo_adminimal')) {
+    return TRUE;
+  }
+  return FALSE;
+}
+
+function _user_is_parent() {
+  // Load the currently logged in user.
+  global $user;
+  // Check if the user has the 'parent' role.
+  if (in_array('Parent/Guardian', $user->roles)) {
+    // do fancy stuff
+    return TRUE;
+  }
+  return FALSE;
+}
+
+/**
+ * Our access callback for subuser list viewing - only permits users
+ * with 'view subusers' to view user or parent-user to view subusers
+ *
+ * @param $account
+ *   the account whos list is being viewed (user object or uid)
+ */
+function cdojo_base_subuser_ui_access_list_page_callback($account) {
+  global $user;
+  $acct_uid = is_object($account) ? $account->uid : $account;
+  // Never allow access to view the anonymous user account.
+  if ($acct_uid) {
+    // Admins can view all, users can view own profiles if allowed.
+    if (($user->uid == $acct_uid && user_access('view subusers', $user)) || user_access('administer users')) {
+      return TRUE;
+    }
+  }
+  return FALSE;
+}
+
+/**
+ * Search and replace for phone field markup to make it required visibly.
+ */
+function _cdojo_base_user_phone_required(&$form) {
+  if (isset($form['civicrm-profile-register']['#markup'])) {
+    $civicrm_markup = $form['civicrm-profile-register']['#markup'];
+    // For form when not invalid.
+    $civicrm_markup = preg_replace('#<label for="phone-Primary-1">Phone</label>#', '<label for="phone-Primary-1">Phone<span class="crm-marker" title="This field is required.">*</span></label>', $civicrm_markup);
+    // For form when invalid
+    $str = <<<EOD
+<label for="phone-Primary-1">  <span class="crm-error crm-error-label">
+    Phone
+      </span>
+
+</label>
+EOD;
+    $civicrm_markup = preg_replace('#' . $str . '#', '<label for="phone-Primary-1"><span class="crm-error crm-error-label">Phone <span class="crm-marker" title="This field is required.">*</span></span></label>', $civicrm_markup);
+
+    $civicrm_markup = preg_replace('#id="phone-Primary-1" class="medium crm-form-text"#', 'id="phone-Primary-1" class="medium crm-form-text required"', $civicrm_markup);
+
+    $form['civicrm-profile-register']['#markup'] = $civicrm_markup;
+  }
+}

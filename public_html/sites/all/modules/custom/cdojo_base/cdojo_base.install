@@ -1,0 +1,14 @@
+<?php
+
+/**
+ * Implements hook_install().
+ *
+ * Makes this module higher weight than
+ * optional_mail (weight 0) and civicrm (weight 100) modules.
+ */
+function cdojo_base_install() {
+  db_update('system')
+    ->fields(array('weight' => 101))
+    ->condition('name', 'cdojo_base', '=')
+    ->execute();
+}

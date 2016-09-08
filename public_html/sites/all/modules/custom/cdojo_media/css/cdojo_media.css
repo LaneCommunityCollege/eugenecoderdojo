@@ -1,0 +1,58 @@
+.navbar-icon-civicrm:before {
+    background-image: url("../images/civicrm.png");
+}
+.navbar-icon-civicrm:active:before,
+.navbar-icon-civicrm.navbar-active:before {
+    background-image: url("../images/civicrm_active.png");
+}
+.navbar-icon-home:before {
+    background-image: url("../images/home.svg");
+}
+.navbar-icon-home:active:before,
+.navbar-icon-home.navbar-active:before {
+    background-image: url("../images/home_active.svg");
+}
+#mini-panel-credits .social-links ul {
+    display: inline-block;
+    list-style: none;
+    margin-bottom: 0;
+    padding: 0;
+}
+#mini-panel-credits .social-links li {
+    display: inline-block;
+    position: relative;
+}
+#mini-panel-credits .social-links li a[class^="icon-"] {
+    font-size: 0;
+    line-height: 0;
+    position: relative;
+}
+#mini-panel-credits .social-links li a[class^="icon-"]:before {
+    color: #ffba00;
+    font-size: 22px;
+    line-height: 0;
+}
+#mini-panel-credits .social-links li a[class^="icon-"]:hover:before,
+#mini-panel-credits .social-links li a[class^="icon-"]:active:before,
+#mini-panel-credits .social-links li a[class^="icon-"]:focus:before {
+    color: #ffffff;
+    text-decoration: none;
+}
+#mini-panel-credits .social-links li a[class^="icon-meetup"]:before {
+    font-size: 32px;
+}
+#mini-panel-credits .social-links li a[class^="icon-facebook"] {
+    top: 4px;
+}
+#mini-panel-credits .social-links li a[class^="icon-meetup"] {
+    top: 8px;
+}
+#mini-panel-credits .social-links,
+#mini-panel-credits #copy {
+    position: relative;
+}
+#mini-panel-credits .social-links .pane-content,
+#mini-panel-credits #copy .pane-content {
+    position: relative;
+    top: 3px;
+}

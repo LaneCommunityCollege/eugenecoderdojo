@@ -1,0 +1,889 @@
+diff --git a/addressfield.api.php b/addressfield.api.php
+index b52b950..629e522 100644
+--- a/addressfield.api.php
++++ b/addressfield.api.php
+@@ -6,6 +6,21 @@
+  */
+ 
+ /**
++ * Info hook defining available address formats.
++ */
++function hook_addressfield_format_info() {
++  return array(
++    'address' => array(
++      'title' => t('Address form (country-specific)'),
++      'format callback' => 'addressfield_format_address_generate',
++      'type' => 'address',
++      'weight' => -100,
++      'file' => 'formats/address.inc',
++    ),
++  );
++}
++
++/**
+  * Format generation callback.
+  *
+  * @param $format
+@@ -30,6 +45,36 @@ function CALLBACK_addressfield_format_callback(&$format, $address, $context = ar
+ }
+ 
+ /**
++ * Allow other modules to alter at run time which handlers to use.
++ * Useful when you want to conditionally add/remove handlers based on data
++ * stored on an entity.
++ *
++ * @param &$handlers
++ *    Array of handlers that can be used. Use a FALSE value to indicate it
++ *    shouldn't be used and the name to indicate it should be used to generate
++ *    the address.
++ * @param $address
++ *    The address data used for the form
++ * @param $context
++ *   An array of context arguments:
++ *     - 'mode': can be either 'form' or 'render'
++ *     - (optional) 'field': when generated for a field, the field
++ *     - (optional) 'instance': when generated for a field, the field instance
++ *     - (optional) 'langcode': when generated for a field, the langcode
++ *       this field is being rendered in.
++ *     - (optional) 'delta': when generated for a field, the delta of the
++ *       currently handled address.
++ *     - (optional) 'entity': The entity that the form/display is created for
++ *     - (optional) 'entity_type': The entity_type of the entity provided
++ *     - (optional) 'entity_types': If an entity_type can't be established,
++ *       an array of types is passed instead.
++ *
++ */
++function hook_addressfield_handlers_alter(&$handlers, $address, $context) {
++  // No example.
++}
++
++/**
+  * Allows modules to alter the default values for an address field.
+  *
+  * @param $default_values
+diff --git a/addressfield.info b/addressfield.info
+index af5d068..d48764f 100644
+--- a/addressfield.info
++++ b/addressfield.info
+@@ -2,10 +2,10 @@ name = Address Field
+ description = Manage a flexible address field, implementing the xNAL standard.
+ core = 7.x
+ package = Fields
+-
+ dependencies[] = ctools
+-
+ files[] = addressfield.migrate.inc
+ files[] = views/addressfield_views_handler_field_administrative_area.inc
++files[] = views/addressfield_views_handler_argument_countryname.inc
+ files[] = views/addressfield_views_handler_field_country.inc
+ files[] = views/addressfield_views_handler_filter_country.inc
++files[] = views/addressfield_views_handler_filter_country_admin.inc
+diff --git a/addressfield.module b/addressfield.module
+index 68b45d9..d7a85f4 100644
+--- a/addressfield.module
++++ b/addressfield.module
+@@ -53,6 +53,43 @@ function addressfield_module_implements_alter(&$implementations, $hook) {
+ }
+ 
+ /**
++ * Return a list of address fields.
++ *
++ * @param string $entity_type
++ *   The entity type to get the addressfields for. If empty, all
++ *   addressfields are returned.
++ *
++ * @return array
++ *   An array of addressfield fields.
++ */
++function addressfield_get_address_fields($entity_type = '') {
++  $fields = &drupal_static(__FUNCTION__ . '_' . $entity_type);
++  if (isset($fields)) {
++    return $fields;
++  }
++  // Get all field definitions in advance to save individual function calls to field_info_field().
++  $fields = field_info_fields();
++  foreach (field_info_instances($entity_type) as $field_name => $instance) {
++    $field = $fields[$field_name];
++    if (!isset($field['bundles'][$entity_type])) {
++      unset($fields[$field_name]);
++    }
++  }
++  // Get all addressfield fields.
++  $fields = array_filter(field_info_field_map(), 'addressfield_field_map_filter');
++  if (!empty($fields)) {
++    // Keep only the fields present on this entity_type to spare some
++    // iterations in the calling function.
++    foreach ($fields as $field_name => $field) {
++      if (!isset($field['bundles'][$entity_type])) {
++        unset($fields[$field_name]);
++      }
++    }
++  }
++  return $fields;
++}
++
++/**
+  * Returns TRUE if a field map array value represents an addressfield.
+  *
+  * Provided for use as a callback by array_filter().
+@@ -62,7 +99,92 @@ function addressfield_field_map_filter($field) {
+ }
+ 
+ /**
+- * Get the list of format plugins.
++ * Implements hook_addressfield_format_info().
++ */
++function addressfield_addressfield_format_info() {
++  return array(
++    'address' => array(
++      'title' => t('Show the address form (country-specific)'),
++      'format callback' => 'addressfield_format_address_generate',
++      'type' => 'address',
++      'weight' => -100,
++      'file' => 'formats/address.inc',
++    ),
++    'address_hide_country' => array(
++      'title' => t('Hide country field (when only one is available)'),
++      'format callback' => 'addressfield_format_address_hide_country',
++      'type' => 'address',
++      'weight' => -90,
++      'file' => 'formats/address-hide-country.inc',
++    ),
++    'address_hide_postal_code' => array(
++      'title' => t('Hide postal code field (Zip)'),
++      'format callback' => 'addressfield_format_address_hide_postal_code',
++      'type' => 'address',
++      'weight' => -85,
++      'file' => 'formats/address-hide-potal-code.inc',
++    ),
++    'address_hide_administrative_area' => array(
++      'title' => t('Hide administrative area field (State/Province)'),
++      'format callback' => 'addressfield_format_address_hide_administrative_area',
++      'type' => 'address',
++      'weight' => -84,
++      'file' => 'formats/address-hide-administrative-area.inc',
++    ),
++    'address_hide_locality' => array(
++      'title' => t('Hide locality field (City)'),
++      'format callback' => 'addressfield_format_address_hide_locality',
++      'type' => 'address',
++      'weight' => -84,
++      'file' => 'formats/address-hide-locality.inc',
++    ),
++    'address_hide_street' => array(
++      'title' => t('Hide 1st street address field (Address/locality)'),
++      'format callback' => 'addressfield_format_address_hide_street',
++      'type' => 'address',
++      'weight' => -83,
++      'file' => 'formats/address-hide-street.inc',
++    ),
++    'address_hide_street_two' => array(
++      'title' => t('Hide 2nd street address field (Address 2/premise)'),
++      'format callback' => 'addressfield_format_address_hide_premise',
++      'type' => 'address',
++      'weight' => -82,
++      'file' => 'formats/address-hide-premise.inc',
++    ),
++    'name_oneline' => array(
++      'title' => t('Show a Full Name field'),
++      'format callback' => 'addressfield_format_name_oneline_generate',
++      'type' => 'name',
++      'weight' => 0,
++      'file' => 'formats/name-oneline.inc',
++    ),
++    'name_full' => array(
++      'title' => t('Show First & Last name fields)'),
++      'format callback' => 'addressfield_format_name_full_generate',
++      'type' => 'name',
++      'weight' => 0,
++      'file' => 'formats/name-full.inc',
++    ),
++    'organisation' => array(
++      'title' => t('Show Company/Organization field'),
++      'format callback' => 'addressfield_format_organisation_generate',
++      'type' => 'organisation',
++      'weight' => -10,
++      'file' => 'formats/organisation.inc',
++    ),
++    'address_optional' => array(
++      'title' => t('Make all fields optional (No validation - unsuitable for postal purposes)'),
++      'format callback' => 'addressfield_format_address_optional',
++      'type' => 'address',
++      'weight' => 100,
++      'file' => 'formats/address-optional.inc',
++    ),
++  );
++}
++
++/**
++ * Get the sorted list of format plugins.
+  */
+ function addressfield_format_plugins() {
+   ctools_include('plugins');
+@@ -289,10 +411,79 @@ function addressfield_theme() {
+   $hooks['addressfield_container'] = array(
+     'render element' => 'element',
+   );
++  $hooks['addressfield_address'] = array(
++    'variables' => array('country' => NULL,
++      'administrative_area' => NULL,
++      'sub_administrative_area' => NULL,
++      'locality' => NULL,
++      'dependent_locality' => NULL,
++      'postal_code' => NULL,
++      'thoroughfare' => NULL,
++      'premise' => NULL,
++      'sub_premise' => NULL,
++      'organisation_name' => NULL,
++      'name_line' => NULL,
++      'first_name' => NULL,
++      'last_name' => NULL,
++      'data' => NULL,
++      'entity_type' => NULL,
++      'entity' => NULL,
++      'field' => NULL,
++      'instance' => NULL,
++      'langcode' => NULL,
++      'display' => NULL,
++    ),
++  );
+   return $hooks;
+ }
+ 
+ /**
++ * Theme function for rendering an address.
++ *
++ * This is an alternative to Addressfield's plugin system for formatters. To
++ * use this theme function with fields, you must select the "Theme function"
++ * formatter for the field's "Manage Display" settings.
++ *
++ * @param $variables
++ *   An array containing the addressfield sub-fields.
++ */
++function theme_addressfield_address($variables) {
++  // Make each sub-field available as its own variable.
++  extract($variables);
++  $output = '';
++  // Render street block
++  if ($thoroughfare || $premise) {
++    $output .= '<div class="street-block">';
++    if ($thoroughfare) {
++      $output .= '<div class="thoroughfare">' . check_plain($thoroughfare) . '</div>';
++    }
++    if ($premise) {
++      $output .= '<div class="premise">' . check_plain($premise) . '</div>';
++    }
++    $output .= '</div>';
++  }
++  // Render locality block
++  if ($locality || $administrative_area || $postal_code) {
++    $output .= '<div class="locality-block">';
++    if ($locality) {
++      $output .= '<span class="locality">' . check_plain($locality) . '</span>';
++    }
++    if ($locality && $administrative_area) {
++      $output .= ', ';
++    }
++    if ($administrative_area) {
++      $output .= ' <span class="state">' . check_plain($administrative_area) . '</span>';
++    }
++    if ($postal_code) {
++      $output .= ' <span class="postal-code">' . check_plain($postal_code) . '</span>';
++    }
++  $output .= '</div>';
++  }
++
++  return $output;
++}
++
++/**
+  * Render a container for a set of address fields.
+  */
+ function theme_addressfield_container($variables) {
+@@ -592,6 +783,19 @@ function addressfield_field_widget_form(&$form, &$form_state, $field, $instance,
+       'langcode' => $langcode,
+       'delta' => $delta,
+     );
++    // Try to get the entity from the form_state
++    if (!empty($form_state['build_info']['args'][0])) {
++      $context['entity'] = $form_state['build_info']['args'][0];
++      // Add what info we know about the entity type
++      if (count($field['entity_types']) == 1) {
++        $context['entity_type'] = $field['entity_types'][0];
++      }
++      else {
++        $context['entity_types'] = $field['entity_types'];
++      }
++    }
++    // Allow other modules to alter the handlers used.
++    drupal_alter('addressfield_handlers', $settings['format_handlers'], $address, $context);
+     $element += addressfield_generate($address, $settings['format_handlers'], $context);
+ 
+     // Remove any already saved default value.
+@@ -679,6 +883,13 @@ function addressfield_field_formatter_info() {
+         'format_handlers' => array('address'),
+       ),
+     ),
++    'addressfield_themeable' => array(
++      'label' => t('Theme function'),
++      'field types' => array('addressfield'),
++      'settings' => array(
++        'subformatter' => '',
++      ),
++    ),
+   );
+ }
+ 
+@@ -686,6 +897,32 @@ function addressfield_field_formatter_info() {
+  * Implements hook_field_formatter_settings_form().
+  */
+ function addressfield_field_formatter_settings_form($field, $instance, $view_mode, $form, &$form_state) {
++  $callback = '_addressfield_field_formatter_settings_form_' . $instance['display'][$view_mode]['type'];
++  if (is_callable($callback)) {
++    return $callback($field, $instance, $view_mode, $form, $form_state);
++  }
++}
++
++/**
++ * Field formatter settings form for addressfield_themeable.
++ */
++function _addressfield_field_formatter_settings_form_addressfield_themeable($field, $instance, $view_mode, $form, &$form_state) {
++  $display = $instance['display'][$view_mode];
++  $settings = $display['settings'];
++
++  $element['subformatter'] = array(
++    '#type' => 'textfield',
++    '#title' => t('Subformatter'),
++    '#default_value' => $settings['subformatter'],
++  );
++
++  return $element;
++}
++
++/**
++ * Field formatter settings form for addressfield_default.
++ */
++function _addressfield_field_formatter_settings_form_addressfield_default($field, $instance, $view_mode, $form, &$form_state) {
+   $display = $instance['display'][$view_mode];
+   $settings = $display['settings'];
+ 
+@@ -734,6 +971,27 @@ function _addressfield_field_formatter_settings_form_validate($element, &$elemen
+  * Implements hook_field_formatter_settings_summary().
+  */
+ function addressfield_field_formatter_settings_summary($field, $instance, $view_mode) {
++  $callback = '_addressfield_field_formatter_summary_' . $instance['display'][$view_mode]['type'];
++  if (is_callable($callback)) {
++    return $callback($field, $instance, $view_mode);
++  }
++}
++
++/**
++ * Field formatter summary for addressfield_themeable.
++ */
++function _addressfield_field_formatter_summary_addressfield_themeable($field, $instance, $view_mode) {
++  $display = $instance['display'][$view_mode];
++  $settings = $display['settings'];
++
++  $subformatter = !empty($settings['subformatter']) ? $settings['subformatter'] : '-';
++  return t('Subformatter') . ': ' . $subformatter;
++}
++
++/**
++ * Field formatter summary for addressfield_default.
++ */
++function _addressfield_field_formatter_summary_addressfield_default($field, $instance, $view_mode) {
+   $display = $instance['display'][$view_mode];
+   $settings = $display['settings'];
+ 
+@@ -773,10 +1031,21 @@ function addressfield_field_formatter_view($entity_type, $entity, $field, $insta
+           'instance' => $instance,
+           'langcode' => $langcode,
+           'delta' => $delta,
++          'entity_type' => $entity_type,
++          'entity' => $entity,
+         );
++        // Allow other modules to alter the handlers used.
++        drupal_alter('addressfield_handlers', $handlers, $address, $context);
+         $element[$delta] = addressfield_generate($address, $handlers, $context);
+       }
+       break;
++
++    case 'addressfield_themeable':
++      $entity_info = compact('entity_type', 'entity', 'field', 'instance', 'langcode', 'display');
++      foreach ($items as $delta => $item) {
++        $element[$delta] = array('#markup' => theme('addressfield_address', $item + $entity_info));
++      }
++      break;
+   }
+ 
+   return $element;
+@@ -906,3 +1175,24 @@ function _addressfield_country_options_list($field = NULL, $instance = NULL) {
+ 
+   return $countries;
+ }
++
++/**
++ * Returns the format callback for the specified handler.
++ *
++ * @param $handler
++ *   The format handler of the callback.
++ * @param $formats
++ *   All Format information as returned from hook_addressfield_format_infos().
++ */
++function _addressfield_get_format_callback($handler, $formats) {
++  if (array_key_exists($handler, $formats) && array_key_exists('format callback', $formats[$handler])) {
++    $function = $formats[$handler]['format callback'];
++    if (array_key_exists('file', $formats[$handler])) {
++      $file = str_replace('.inc', '', $formats[$handler]['file']);
++      module_load_include('inc', 'addressfield', $file);
++    }
++    if (function_exists($function)) {
++      return $function;
++    }
++  }
++}
+diff --git a/css/addressfield-views.css b/css/addressfield-views.css
+new file mode 100644
+index 0000000..44caf5c
+--- /dev/null
++++ b/css/addressfield-views.css
+@@ -0,0 +1,9 @@
++/**
++ * @file
++ * Defines a field for attaching country-specific addresses to entities.
++ */
++
++/* align the widgets right/left of each other */
++.views-widget-filter-field_address_full_country_admin .form-item {
++  display: inline-block;
++}
+\ No newline at end of file
+diff --git a/js/addressfield-views.js b/js/addressfield-views.js
+new file mode 100644
+index 0000000..6f9ee6b
+--- /dev/null
++++ b/js/addressfield-views.js
+@@ -0,0 +1,36 @@
++/**
++ * @file addressfield-views.js
++ * Provides show/hide feature for country administrative area views handler.
++ */
++(function ($, Drupal) {
++
++    Drupal.behaviors.addressfieldOptgroupSelect = {
++        attach: function(context) {
++            // Save a complete set of states in memory.
++            var $states = $(context).find('.addressfield-views-admin-area').once('addressfield-state');
++            if ($states.length === 0) {
++                return;
++            }
++
++            // Save a list of all country administrative areas.
++            var areas = {};
++            $states.find('optgroup').each(function() {
++                areas[this.label] = $(this).children();
++                $(this).detach();
++            });
++
++            // Whenever the country changes...
++            $states.closest('.views-widget').find('.addressfield-views-country').change(function() {
++                var val = $(this).find('option:selected').val();
++                $states.empty().append(areas[val]);
++                if ($states.children().length) {
++                    $states.closest('.form-item').show();
++                }
++                else {
++                    $states.closest('.form-item').hide();
++                }
++            }).triggerHandler("change");
++        }
++    }
++
++}) (jQuery, Drupal);
+\ No newline at end of file
+diff --git a/views/addressfield.views.inc b/views/addressfield.views.inc
+index f059da3..4e31adc 100644
+--- a/views/addressfield.views.inc
++++ b/views/addressfield.views.inc
+@@ -1,4 +1,8 @@
+ <?php
++/**
++ * @file
++ * Views integration for the addressfield module.
++ */
+ 
+ /**
+  * Implements hook_field_views_data().
+@@ -26,6 +30,8 @@ function addressfield_field_views_data($field) {
+   // Only expose these components as Views field handlers.
+   $implemented = array(
+     'country' => 'addressfield_views_handler_field_country',
++    'countryname' => 'addressfield_views_handler_argument_countryname',
++    'country_admin' => 'addressfield_views_handler_filter_country_admin',
+     'administrative_area' => 'addressfield_views_handler_field_administrative_area',
+     'sub_administrative_area' => 'views_handler_field',
+     'dependent_locality' => 'views_handler_field',
+@@ -62,6 +68,31 @@ function addressfield_field_views_data($field) {
+         $valid_columns[$column_name] = $handler;
+       }
+ 
++      // Add a country name handler.
++      if (isset($table[$field['field_name'] . '_country'])) {
++        // Clone the country handler.
++        $table[$field['field_name'] . '_countryname'] = $table[$field['field_name'] . '_country'];
++        // Set our own argument handler.
++        $table[$field['field_name'] . '_countryname']['argument']['handler'] = 'addressfield_views_handler_argument_countryname';
++        // Remove filter and sort handlers, since these are not needed.
++        unset($table[$field['field_name'] . '_countryname']['filter']);
++        unset($table[$field['field_name'] . '_countryname']['sort']);
++      }
++
++      // Add a country and administrative area handler.
++      if (isset($table[$field['field_name'] . '_country']) && isset($table[$field['field_name'] . '_administrative_area'])) {
++        // Clone the country handler.
++        $table[$field['field_name'] . '_country_admin'] = $table[$field['field_name'] . '_country'];
++
++        // Set our own filter handler.
++        $table[$field['field_name'] . '_country_admin']['filter']['handler'] = 'addressfield_views_handler_filter_country_admin';
++
++        // Remove argument, field, and sort handlers.
++        unset($table[$field['field_name'] . '_country_admin']['argument']);
++        unset($table[$field['field_name'] . '_country_admin']['field']);
++        unset($table[$field['field_name'] . '_country_admin']['sort']);
++      }
++
+       // Iterate over the addressfield components.
+       foreach ($table as $column_name => &$column) {
+         if (empty($column['field']) && isset($valid_columns[$column_name])) {
+@@ -86,6 +117,21 @@ function addressfield_field_views_data($field) {
+             $column['title'] = $title;
+             $column['title short'] = $title;
+           }
++          // The country name column is a virtual column. Handle it separately.
++          else if ($property === 'countryname') {
++            $property_label = t('Country name');
++            $title = t('@field-label - @property-label', array(
++              '@field-label' => $field_label,
++              '@property-label' => $property_label,
++            ));
++            $column['title'] = $title;
++            $column['title short'] = $title;
++          }
++          // The Country & Admin area column is also a virtual column.
++          else if ($property === 'country_admin') {
++            $column['title'] = t('@field-label - Country and Administrative area (i.e. State / Province)', array('@field-label' => $field_label));
++            $column['title short'] = t('@field-label - Country & Admin area (i.e. State / Province)', array('@field-label' => $field_label));
++          }
+         }
+       }
+     }
+diff --git a/views/addressfield_views_handler_argument_countryname.inc b/views/addressfield_views_handler_argument_countryname.inc
+new file mode 100644
+index 0000000..d1d66b8
+--- /dev/null
++++ b/views/addressfield_views_handler_argument_countryname.inc
+@@ -0,0 +1,91 @@
++<?php
++/**
++ * @file
++ * Contains \addressfield_views_handler_argument_countryname.
++ */
++
++/**
++ * A views argument (contextual filter) handler which filters views results by
++ * the name of a country instead of it's abbreviation.
++ *
++ * This contextual filter handler assumes that the value of the argument passed
++ * into it (typically via the URL) is the same language that the request is
++ * being executed with. This is due to the way that core maps country names and
++ * abbreviations (see _country_get_predefined_list()).
++ *
++ * In other words, if the language used during a request is not determined by a
++ * portion of the URL, this filter will probably not work for all countries.
++ *
++ * Here is an example...
++ *
++ * In French, the United States is known as "États-Unis".
++ *
++ * If a site is available in both English and French, AND the site is set up in
++ * such a way that the language used during the request is determined by a
++ * part of the page path (e.g.: English is used if the URL looks like
++ * "/en/{path}" and French is used if the URL looks like "/fr/{path}"), then
++ * this filter should work with no trouble (e.g.: both
++ * "/en/locations/United States" and "/fr/locations/États-Unis" will show the
++ * same list of results).
++ *
++ * However, if a site is available in both English and French, and the site is
++ * set up to use cookies to determine the language of the request, then users
++ * will experience problems: a request to * "/locations/United States" will show
++ * no results if the cookies tell Drupal to perform the request in French.
++ */
++class addressfield_views_handler_argument_countryname extends views_handler_argument_string {
++  /**
++   * {@inheritdoc}
++   */
++  function options_form(&$form, &$form_state) {
++    parent::options_form($form, $form_state);
++
++    // Notify the user that the language that the text in the URL must be in the
++    // language used while parsing the request.
++    $form['addressfield_countryname_warning'] = array(
++      '#type' => 'container',
++      '#attributes' => array('class' => array('messages', 'warning')),
++      '#weight' => -50,
++    );
++    $form['addressfield_countryname_warning']['intro'] = array(
++      '#type' => 'item',
++      '#theme_wrappers' => 'p',
++      '#markup' => t('If your site is available in more than one language, you could run into problems with this contextual filter if your site uses cookies to determine the language of the request. It will only work properly if a portion of the URL determines the language of the request.'),
++    );
++    $form['addressfield_countryname_warning']['more_info'] = array(
++      '#type' => 'item',
++      '#prefix' => '<p>',
++      '#suffix' => '</p>',
++      '#markup' => t('Due to the way country abbreviations are mapped to country names, this filter assumes that the value passed in via the URL is written in the same language as the request that is being executed.'),
++    );
++  }
++
++  /**
++   * Add pre-render function so views doesn't explode.
++   *  @todo find out why this is needed and what it should be doing.
++   */
++  function pre_render() {
++    // Do nothing?
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  function query($group_by = FALSE) {
++    // Transform dashes in arguments.
++    $argument = $this->argument;
++    if (!empty($this->options['transform_dash'])) {
++      $argument = strtr($argument, '-', ' ');
++    }
++
++    // Look up countries by name.
++    include_once DRUPAL_ROOT . '/includes/locale.inc';
++    $countries = country_get_list();
++    $country_by_name = array_flip($countries);
++    if (isset($country_by_name[$this->argument])) {
++      $this->argument = $country_by_name[$this->argument];
++    }
++
++  return parent::query();
++  }
++}
+\ No newline at end of file
+diff --git a/views/addressfield_views_handler_filter_country.inc b/views/addressfield_views_handler_filter_country.inc
+index d1b11c1..d98035a 100644
+--- a/views/addressfield_views_handler_filter_country.inc
++++ b/views/addressfield_views_handler_filter_country.inc
+@@ -1,4 +1,7 @@
+ <?php
++/**
++ * Defines a field handler for Country.
++ */
+ 
+ class addressfield_views_handler_filter_country extends views_handler_filter_in_operator {
+   function get_value_options() {
+diff --git a/views/addressfield_views_handler_filter_country_admin.inc b/views/addressfield_views_handler_filter_country_admin.inc
+new file mode 100644
+index 0000000..73d702c
+--- /dev/null
++++ b/views/addressfield_views_handler_filter_country_admin.inc
+@@ -0,0 +1,193 @@
++<?php
++/**
++ * Defines a filter handler that can display the administrative area name
++ * instead of the code.
++ */
++class addressfield_views_handler_filter_country_admin extends views_handler_filter_in_operator {
++
++  /**
++   * init the handler with necessary data.
++   * @param $view
++   *   The $view object this handler is attached to.
++   * @param $options
++   *   The item from the database; the actual contents of this will vary
++   *   based upon the type of handler.
++   */
++  function init(&$view, &$options) {
++    parent::init($view, $options);
++    $this->view = &$view;
++
++    $this->country_field = $this->definition['additional fields'][0];
++    $this->admin_field = $this->definition['additional fields'][1];
++  }
++
++  /**
++   * Override value options.
++   */
++  function get_value_options() {
++    $this->value_title = t('Country');
++    $field = field_info_field($this->definition['field_name']);
++    $this->value_options = _addressfield_country_options_list($field);
++  }
++
++  /**
++   * Override value_form() to provide two selects: country & admin area.
++   *
++   * This should be overridden by all child classes and it must
++   * define $form['value']
++   *
++   * @see options_form()
++   */
++  function value_form(&$form, &$form_state) {
++    $path = drupal_get_path('module', 'addressfield');
++    $form['value'] = array(
++      '#type' => 'container',
++      '#attached' => array(
++        'css' => array($path . '/css/addressfield-views.css'),
++        'js' => array($path . '/js/addressfield-views.js'),
++      ),
++    );
++
++    // Since multiple values is not allowed...
++    $filters = explode('-', $this->value[0]);
++    $default_country = (isset($filters[0])) ? $filters[0] : array();
++    $default_admin_area = (isset($filters[1])) ? $filters[1] : array();
++
++    $id = $this->options['expose']['identifier'];
++    $field = field_info_field($this->definition['field_name']);
++    $countries = _addressfield_country_options_list($field);
++    $form['value'][$id . '-country'] = array(
++      '#type' => 'select',
++      '#title' => t('Country'),
++      '#options' => array_merge(array('all' => 'All'), $countries),
++      '#default_value' => $default_country,
++      '#attributes' => array('class' => array('addressfield-views-country')),
++    );
++
++    $admin_areas = array('' => t('Please select'));
++    module_load_include('inc', 'addressfield', 'addressfield.administrative_areas');
++    foreach ($countries as $code => $name) {
++      if ($code != 'All') {
++        $areas = array('all' => t('- Any -'));
++        $all_areas = addressfield_get_administrative_areas($code);
++        // Limit options to values currently in use.
++        $result = db_query("SELECT DISTINCT($this->admin_field) AS administrative_area FROM {$this->definition['table']} WHERE $this->country_field = :code ORDER BY $this->admin_field", array(':code' => $code))->fetchAllKeyed(0,0);
++        if (!empty($result)) {
++          foreach ($result as $record) {
++            if ($record != '' && isset($all_areas[$record])) {
++              $areas[$record] = $all_areas[$record];
++            }
++          }
++        }
++        if (is_array($areas)) {
++          $admin_areas[$code] = $areas;
++        }
++      }
++    }
++    $form['value'][$id . '-administrative_area'] = array(
++      '#type' => 'select',
++      '#title' => t('State / Province'),
++      '#options' => $admin_areas,
++      '#default_value' => $default_admin_area,
++      '#attributes' => array('class' => array('addressfield-views-admin-area')),
++    );
++  }
++
++  /**
++   * Available operators.
++   */
++  function operators() {
++    return array(
++      'in' => array(
++        'title' => t('Is one of'),
++        'short' => t('in'),
++        'short_single' => t('='),
++        'method' => 'op_simple',
++        'values' => 1,
++      ),
++      'not in' => array(
++        'title' => t('Is not one of'),
++        'short' => t('not in'),
++        'short_single' => t('<>'),
++        'method' => 'op_simple',
++        'values' => 1,
++      ),
++    );
++  }
++
++  /**
++   * Modify the exposed form settings.
++   */
++  function expose_form(&$form, &$form_state) {
++    parent::expose_form($form, $form_state);
++    unset($form['expose']['reduce']);
++    unset($form['expose']['multiple']);
++  }
++
++  /**
++   * Sets value based on input.
++   */
++  function accept_exposed_input($input) {
++    if (empty($this->options['exposed'])) {
++      return TRUE;
++    }
++
++    if (!empty($this->options['expose']['use_operator']) && !empty($this->options['expose']['operator_id']) && isset($input[$this->options['expose']['operator_id']])) {
++      $this->operator = $input[$this->options['expose']['operator_id']];
++    }
++
++    if (!empty($this->options['expose']['identifier'])) {
++      $value = '';
++      if (isset($input[$this->options['expose']['identifier'] . '-country'])) {
++        $value .= $input[$this->options['expose']['identifier'] . '-country'];
++      }
++      if (isset($input[$this->options['expose']['identifier'] . '-administrative_area'])) {
++        if (!is_array($input[$this->options['expose']['identifier'] . '-administrative_area'])) {
++          $value .= '-' . $input[$this->options['expose']['identifier'] . '-administrative_area'];
++        }
++        else{
++          $value .= '-' . implode('-', $input[$this->options['expose']['identifier'] . '-administrative_area']);
++        }
++      }
++
++      if (isset($value)) {
++        $this->value = $value;
++      }
++      else {
++        return FALSE;
++      }
++    }
++
++    return TRUE;
++  }
++
++  /**
++   * Perform any necessary changes to the form values prior to storage.
++   * There is no need for this function to actually store the data.
++   */
++  function value_submit($form, &$form_state) {
++    $value = $form['value']['location-country']['#value'];
++    if (isset($form['value']['location-administrative_area']['#value']) && $form['value']['location-administrative_area']['#value'] != '') {
++      $value .= '-' . $form['value']['location-administrative_area']['#value'];
++    }
++    $form_state['values']['options']['value'] = array($value);
++  }
++
++  /**
++   * Query the DB based on value.
++   */
++  function query() {
++    // Since multiple values is not allowed...
++    $filters = explode('-', $this->value);
++
++    $this->ensure_my_table();
++    if (strtolower($filters[0]) != 'all') {
++      $this->query->add_where($this->options['group'], "$this->table_alias.$this->country_field", array($filters[0]), $this->operator);
++    }
++
++    // @todo find out why this 'Array' hack is necessary.
++    if (isset($filters[1]) && !empty($filters[1]) && ($filters[1] != 'Array') && strtolower($filters[1]) != 'all') {
++      $this->query->add_where($this->options['group'], "$this->table_alias.$this->admin_field", array($filters[1]), $this->operator);
++    }
++  }
++}
+\ No newline at end of file

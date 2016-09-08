@@ -1,0 +1,29 @@
+
+// Fonts.
+// Make the fonts vars w/ general names so it's easy to change them.
+//$main_font: "Open Sans", Arial, Helvetica, sans-serif;
+//$secondary_font : font_family;
+//$icons: icons;
+
+
+$screen_xs: 480px;
+$screen_sm: 768px;
+$screen_md: 992px;
+$screen_lg: 1170px;
+
+//$mobile_padding: 10px;
+//$tablet_padding: 20px;
+
+// Colors.
+$white: #ffffff;
+$black: #000000;
+$gold: #ffba00;
+
+$link_color: $white;
+//$visited_link_color: $medium_gray;
+//$active_link_color: $dark_slate_gray;
+//$hover_link_color: $process_blue;
+//$main_text_color: $medium_gray;
+//$header_text_color: $medium_gray;
+//$selection_text_color: #fff;
+$body_bg_color: $white;

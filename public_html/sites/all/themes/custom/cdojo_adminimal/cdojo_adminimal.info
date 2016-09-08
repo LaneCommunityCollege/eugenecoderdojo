@@ -1,0 +1,18 @@
+name = CoderDojo Adminimal
+description = This is a sub-theme of theme Adminimal, made by Cord for the CoderDojo website.
+core = 7.x
+base theme = adminimal
+
+
+regions[hidden] = Hidden
+regions[content_before] = Before Content
+regions[sidebar_left] = Sidebar Left
+regions[content] = Content
+regions[sidebar_right] = Sidebar Right
+regions[content_after] = After Content
+regions[help] = Help
+regions[page_top] = Page top
+regions[page_bottom] = Page bottom
+regions[footer] = Footer
+
+stylesheets[all][] = css/cdojo_adminimal.css

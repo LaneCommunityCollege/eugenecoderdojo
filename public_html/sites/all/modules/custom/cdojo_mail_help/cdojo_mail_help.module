@@ -1,0 +1,93 @@
+<?php
+/**
+ * @file
+ * Code for cdojo_mail_help module.
+ */
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function cdojo_mail_help_form_user_register_form_alter(&$form, &$form_state, $form_id) {
+  // Add help link to modal for email field.
+  if (isset($form['account'])) {
+    // Add a weight to the mail form item so we know where it will render.
+    $form['account']['mail']['#weight'] = -9;
+    // Include the CTools tools that we need for the modal.
+    ctools_include('ajax');
+    ctools_include('modal');
+    // Add CTools' javascript to the page.
+    ctools_modal_add_js();
+    ctools_add_js('cdojo_mail_help', 'cdojo_mail_help');
+    $name = 'Email Help - Not sure how to best get an email address for your child?';
+    // Create a path for the url that is like our hook_menu() declaration.
+    $href = 'mail_help/nojs';
+    // Here's the ctools function that generates the trigger inside the link
+    // ctools_modal_text_button($text, $dest, $alt, $class = '')
+    // <a href="http://api.drupalize.me/api/drupal/function/ctools_modal_text_button/7">http://api.drupalize.me/api/drupal/function/ctools_modal_text_button/7</a>
+    // IMPORTANT: Include ctools-modal-[your declared style name] as a class so
+    // Ctools knows what Javascript settings to use in generating the modal:
+    $form['account']['mail_help_link'] = array(
+      '#markup' => ctools_modal_text_button($name, $href, t($name), 'ctools-modal-cdojo-mail-help-modal-style'),
+      '#weight' => -8
+    );
+//    ctools_add_css('cdojo_mail_help', 'cdojo_mail_help');
+  }
+}
+
+/**
+ *  Implements of hook_menu()
+ */
+function cdojo_mail_help_menu() {
+  $items['mail_help/%ctools_js'] = array(
+    'title' => 'Email Help - Not sure how to best get an email address for your child?',
+    'page arguments' => array(1),
+    'page callback' => 'cdojo_mail_help_modal_page',
+    'access callback' => TRUE,
+    'type' => MENU_NORMAL_ITEM,
+  );
+  return $items;
+}
+
+/**
+ * A modal static page callback.
+ * @param $js
+ *   boolean CTools determination whether the user's browser is javascript enabled.
+ * @param $nid
+ *   string The node ID of passed as an argument from the hook_menu() path
+ * @return string The contents of the node, that will fill the modal window.
+ */
+function cdojo_mail_help_modal_page($js = NULL) {
+  if ($js) {
+    // Required includes for ctools to work:
+    ctools_include('modal');
+    ctools_include('ajax');
+  }
+  $title = 'Email Help - Not sure how to best get an email address for your child?';
+  $content = array(
+    '#type' => 'container',
+    '#attributes' => array(
+      'class' => array(
+        'test-class',
+      ),
+      'id' => 'mail-help-modal',
+    )
+  );
+  $list_option1 = '<h4>GMail - use your existing account</h4><p>If you have an existing GMail account go to <a href="https://support.google.com/mail/answer/12096?hl=en" target="_blank">https://support.google.com/mail/answer/12096?hl=en</a> to learn about using an alias to send email directly to your own account.</p>';
+  $list_option2 = '<h4>Setup a free webmail account for your child</h4><p>Use one of the services listed in this article setup a free webmail account: <a href="http://email.about.com/od/freeemailreviews/tp/free_email.htm" target="_blank">http://email.about.com/od/freeemailreviews/tp/free_email.htm</a></p>';
+  $list_option3 = '<h4>Absolutely do not want a child email</h4><p>If you absolutely do not want to have an email address associated with your child\'s account you may enter a unique fake or false address, for example: child123456789@example.com. As all emails sent to child users are also sent to the parent user in charge of the account this will not cause notification issues.</p>';
+  $list_items = array(
+    $list_option1,
+    $list_option2,
+    $list_option3,
+  );
+  $content['options_list'] = array(
+    '#theme' => 'item_list',
+    '#items' => $list_items,
+    '#title' => NULL,
+    '#type' => 'ol',
+    '#attributes' => array('id' => 'mail-help-modal-list'),
+    '#container_id' => 'mail-help-modal',
+  );
+  $markup = drupal_render($content);
+  return ctools_modal_render($title, $markup) ;
+}

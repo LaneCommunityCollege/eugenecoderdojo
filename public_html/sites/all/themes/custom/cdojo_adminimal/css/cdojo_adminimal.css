@@ -1,0 +1,14 @@
+.page-admin-people-create #profilewrap1 fieldset,
+.page-admin-people-create #profilewrap16 fieldset {
+    border: none;
+    box-shadow: none;
+}
+.crm-container  #profilewrap1 fieldset  legend {
+    font-size: 20px;
+}
+.page-admin-people-create #editrow-custom_60 {
+    display: none;
+}
+#block-masquerade-masquerade {
+    margin-top: 20px;
+}
