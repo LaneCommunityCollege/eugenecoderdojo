@@ -11,7 +11,7 @@ branches:
   - master
 
 before_install:
-  - openssl aes-256-cbc -K $encrypted_a22d3ba0023f_key -iv $encrypted_a22d3ba0023f_iv -in coderdojo.id_rsa.enc -out coderdojo.id_rsa -d
+  - openssl aes-256-cbc -K $encrypted_a22d3ba0023f_key -iv $encrypted_a22d3ba0023f_iv -in .travis/coderdojo.id_rsa.enc -out .travis/coderdojo.id_rsa -d
   - eval "$(ssh-agent -s)"
   - chmod 600 $TRAVIS_BUILD_DIR/.travis/coderdojo.id_rsa
   - ssh-add $TRAVIS_BUILD_DIR/.travis/coderdojo.id_rsa
