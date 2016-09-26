@@ -21,6 +21,6 @@ script: true
 deploy:
   provider: script
   skip_cleanup: true
-  script: rsync -aqz --chmod=D0755,F0644 -e "ssh -p 22123 -o 'StrictHostKeyChecking no' -o 'PasswordAuthentication no' -o 'PubkeyAuthentication yes'" $TRAVIS_BUILD_DIR/public_html/ dojomeister@coderdojo.lanecc.edu:~/www
+  script: rsync -apqz --chmod=D755,F644 -e "ssh -p 22123 -o 'StrictHostKeyChecking no' -o 'PasswordAuthentication no' -o 'PubkeyAuthentication yes'" $TRAVIS_BUILD_DIR/public_html/ dojomeister@coderdojo.lanecc.edu:~/www
   on:
     branch: master
