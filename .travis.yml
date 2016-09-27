@@ -21,6 +21,8 @@ script: true
 deploy:
   provider: script
   skip_cleanup: true
-  script: rsync -apqz --chmod=Dgo+r,u+rwx,Fu+rw,g+r -e "ssh -p 22123 -o 'StrictHostKeyChecking no' -o 'PasswordAuthentication no' -o 'PubkeyAuthentication yes'" $TRAVIS_BUILD_DIR/public_html/ dojomeister@coderdojo.lanecc.edu:~/www
+  script:
+   - bash $TRAVIS_BUILD_DIR/scripts/drupal-fix-perms.sh --drupal_path=$TRAVIS_BUILD_DIR/public_html --drupal_user=$dojouserid --httpd_group=$nobodyuid
+   - rsync -apqz -e "ssh -p 22123 -o 'StrictHostKeyChecking no' -o 'PasswordAuthentication no' -o 'PubkeyAuthentication yes'" $TRAVIS_BUILD_DIR/public_html/ dojomeister@coderdojo.lanecc.edu:~/www
   on:
     branch: master
