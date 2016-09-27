@@ -58,14 +58,6 @@ if [ -z "${drupal_path}" ] || [ ! -d "${drupal_path}/sites" ] || [ ! -f "${drupa
   exit 1
 fi
 
-if [ -z "${drupal_user}" ] || [[ $(id -un "${drupal_user}" 2> /dev/null) != "${drupal_user}" ]]; then
-  printf "*************************************\n"
-  printf "* Error: Please provide a valid user. *\n"
-  printf "*************************************\n"
-  print_help
-  exit 1
-fi
-
 cd $drupal_path
 printf "Changing ownership of all contents of "${drupal_path}":\n user => "${drupal_user}" \t group => "${httpd_group}"\n"
 chown -R ${drupal_user}:${httpd_group} .
