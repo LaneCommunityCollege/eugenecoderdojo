@@ -14,6 +14,9 @@ This is a modified version of the script from https://www.drupal.org/node/244924
 it does not use chown to set the httpd_user group on any files. Thus, the --httpd_group flag is always set to the value
 of the --drupal_user flag.
 
+Directories are set to 755.
+Files are set to 644.
+
 Usage: (sudo) bash ${0##*/} --drupal_path=PATH --drupal_user=USER --httpd_group=GROUP
 Example: (sudo) bash ${0##*/} --drupal_path=/usr/local/apache2/htdocs --drupal_user=john --httpd_group=www-data
 HELP
@@ -45,10 +48,10 @@ done
 
 cd $drupal_path
 
-printf "Changing permissions of all directories inside "${drupal_path}" to "rwxr-x---"...\n"
-find . -type d -exec chmod u=rwx,g=rx,o= '{}' \;
+printf "Changing permissions of all directories inside "${drupal_path}" to "rwxr-xr-x"...\n"
+find . -type d -exec chmod u=rwx,g=rx,o=rx '{}' \;
 
-printf "Changing permissions of all files inside "${drupal_path}" to "rw-r-----"...\n"
-find . -type f -exec chmod u=rw,g=r,o= '{}' \;
+printf "Changing permissions of all files inside "${drupal_path}" to "rw-r--r--"...\n"
+find . -type f -exec chmod u=rw,g=r,o=r '{}' \;
 
 echo "Done setting proper permissions on files and directories"
