@@ -78,6 +78,6 @@ for x in ./*/files; do
   find ${x} -type d -exec chmod ug=rwx,o= '{}' \;
   find ${x} -type f -exec chmod ug=rw,o= '{}' \;
 done
-chmod 754 ${drupal_path}
-chgrp ${drupal_user} ${drupal_path}/index.php
+#chmod 754 ${drupal_path}
+#chgrp ${drupal_user} ${drupal_path}/index.php
 echo "Done setting proper permissions on files and directories"
