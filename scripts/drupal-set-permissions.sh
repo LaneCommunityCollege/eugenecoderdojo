@@ -51,14 +51,4 @@ find . -type d -exec chmod u=rwx,g=rx,o= '{}' \;
 printf "Changing permissions of all files inside "${drupal_path}" to "rw-r-----"...\n"
 find . -type f -exec chmod u=rw,g=r,o= '{}' \;
 
-printf "Changing permissions of "files" directories in "${drupal_path}/sites" to "rwxrwx---"...\n"
-cd sites
-find . -type d -name files -exec chmod ug=rwx,o= '{}' \;
-
-printf "Changing permissions of all files inside all "files" directories in "${drupal_path}/sites" to "rw-rw----"...\n"
-printf "Changing permissions of all directories inside all "files" directories in "${drupal_path}/sites" to "rwxrwx---"...\n"
-for x in ./*/files; do
-  find ${x} -type d -exec chmod ug=rwx,o= '{}' \;
-  find ${x} -type f -exec chmod ug=rw,o= '{}' \;
-done
 echo "Done setting proper permissions on files and directories"
