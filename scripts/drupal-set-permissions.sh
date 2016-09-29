@@ -1,5 +1,5 @@
 #!/bin/bash
-
+# no longer tries to use chown, or check that the drupal path is a valid drupal instance.
 # Help menu
 print_help() {
 cat <<-HELP
@@ -10,23 +10,18 @@ you need to provide the following arguments:
   2) Username of the user that you want to give files/directories ownership.
   3) HTTPD group name (defaults to www-data for Apache).
 
+This is a modified version of the script from https://www.drupal.org/node/244924 It does not require sudo because
+it does not use chown to set the httpd_user group on any files. Thus, the --httpd_group flag is always set to the value
+of the --drupal_user flag.
+
 Usage: (sudo) bash ${0##*/} --drupal_path=PATH --drupal_user=USER --httpd_group=GROUP
 Example: (sudo) bash ${0##*/} --drupal_path=/usr/local/apache2/htdocs --drupal_user=john --httpd_group=www-data
 HELP
 exit 0
 }
 
-if [ $(id -u) != 0 ]; then
-  printf "**************************************\n"
-  printf "* Error: You must run this with sudo or root*\n"
-  printf "**************************************\n"
-  print_help
-  exit 1
-fi
-
 drupal_path=${1%/}
 drupal_user=${2}
-httpd_group="${3:-www-data}"
 
 # Parse Command Line Arguments
 while [ "$#" -gt 0 ]; do
@@ -36,8 +31,6 @@ while [ "$#" -gt 0 ]; do
         ;;
     --drupal_user=*)
         drupal_user="${1#*=}"
-        ;;
-    --httpd_group=*)
         httpd_group="${1#*=}"
         ;;
     --help) print_help;;
@@ -50,17 +43,7 @@ while [ "$#" -gt 0 ]; do
   shift
 done
 
-if [ -z "${drupal_path}" ] || [ ! -d "${drupal_path}/sites" ] || [ ! -f "${drupal_path}/core/modules/system/system.module" ] && [ ! -f "${drupal_path}/modules/system/system.module" ]; then
-  printf "*********************************************\n"
-  printf "* Error: Please provide a valid Drupal path. *\n"
-  printf "*********************************************\n"
-  print_help
-  exit 1
-fi
-
 cd $drupal_path
-printf "Changing ownership of all contents of "${drupal_path}":\n user => "${drupal_user}" \t group => "${httpd_group}"\n"
-chown -R ${drupal_user}:${httpd_group} .
 
 printf "Changing permissions of all directories inside "${drupal_path}" to "rwxr-x---"...\n"
 find . -type d -exec chmod u=rwx,g=rx,o= '{}' \;
@@ -78,6 +61,4 @@ for x in ./*/files; do
   find ${x} -type d -exec chmod ug=rwx,o= '{}' \;
   find ${x} -type f -exec chmod ug=rw,o= '{}' \;
 done
-#chmod 754 ${drupal_path}
-#chgrp ${drupal_user} ${drupal_path}/index.php
 echo "Done setting proper permissions on files and directories"

@@ -1,10 +1,9 @@
 #!/bin/bash
-
-/usr/bin/sudo /bin/bash $TRAVIS_BUILD_DIR/scripts/drupal-set-permissions.sh --drupal_path=$TRAVIS_BUILD_DIR/public_html --drupal_user=$dojouseruid --httpd_group=$dojouseruid;
-
-/usr/bin/sudo rsync -avz --numeric-ids -e "ssh -p 22123 -o 'StrictHostKeyChecking no' -o 'PasswordAuthentication no' -o 'PubkeyAuthentication yes'" $TRAVIS_BUILD_DIR/public_html/ dojomeister@coderdojo.lanecc.edu:~/www;
-
-cd $TRAVIS_BUILD_DIR ;
-
-ls -al ;
-
+ssh -p 22123 -t -t -o 'StrictHostKeyChecking no' -o 'PasswordAuthentication no' -o 'PubkeyAuthentication yes' $dojousername@$dojohost <<EOF
+  cd /home/$dojousername/staging/eugenecoderdojo
+  /bin/git fetch origin
+  /bin/git reset --hard origin/master
+  /bin/bash scripts/drupal-set-permissions.sh --drupal_path=~/staging/eugenecoderdojo/public_html --drupal_user=$dojousername
+  /bin/rsync --exclude=".git" -avz ~/staging/eugenecoderdojo/public_html/ ~/public_html
+  exit
+EOF
