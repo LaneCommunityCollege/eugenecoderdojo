@@ -49,9 +49,9 @@ done
 cd $drupal_path
 
 printf "Changing permissions of all directories inside "${drupal_path}" to "rwxr-xr-x"...\n"
-find . -type d -exec chmod u=rwx,g=rx,o=rx '{}' \;
+find . -type d | grep -v -E "(default\/files|default\/private)" | awk -F":" '{print $1}' | xargs chmod u=rwx,g=rx,o=rx
 
 printf "Changing permissions of all files inside "${drupal_path}" to "rw-r--r--"...\n"
-find . -type f -exec chmod u=rw,g=r,o=r '{}' \;
+find . -type f | grep -v -E "(default\/files|default\/private)" | awk -F":" '{print $1}' | xargs chmod u=rw,g=r,o=r
 
 echo "Done setting proper permissions on files and directories"
