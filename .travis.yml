@@ -4,7 +4,7 @@ sudo: true
 
 addons:
   ssh_known_hosts:
-    - coderdojo.lanecc.edu
+    - $dojohost
 
 branches:
   only:
