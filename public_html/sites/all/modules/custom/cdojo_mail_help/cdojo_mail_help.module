@@ -57,11 +57,9 @@ function cdojo_mail_help_menu() {
  * @return string The contents of the node, that will fill the modal window.
  */
 function cdojo_mail_help_modal_page($js = NULL) {
-  if ($js) {
-    // Required includes for ctools to work:
-    ctools_include('modal');
-    ctools_include('ajax');
-  }
+  // Required includes for ctools to work:
+  ctools_include('modal');
+  ctools_include('ajax');
   $title = 'Email Help - Not sure how to best get an email address for your child?';
   $content = array(
     '#type' => 'container',
