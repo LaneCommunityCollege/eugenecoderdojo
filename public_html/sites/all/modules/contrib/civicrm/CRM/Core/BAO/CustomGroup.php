@@ -644,7 +644,7 @@ ORDER BY civicrm_custom_group.weight,
     }
     $subTypes = CRM_Contact_BAO_ContactType::subTypeInfo($entityType, TRUE);
     if (!array_key_exists($subType, $subTypes)) {
-      throw new CRM_Core_Exception('Invalid Filter - $subType: ' . print_r($subType, true) . '$subTypes: '. print_r($subTypes, true));
+      throw new CRM_Core_Exception('Invalid Filter');
     }
     return $subType;
   }
