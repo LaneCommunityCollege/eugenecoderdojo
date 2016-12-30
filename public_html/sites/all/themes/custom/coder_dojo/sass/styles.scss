@@ -13,3 +13,9 @@
 @import "partials/*";
 
 ////////////////////////////////////////////////////////////////////////////////
+
+
+// Panels doesn't seem to hide this. 
+.panels-flexible-region .pane-title {
+    display: none;
+}

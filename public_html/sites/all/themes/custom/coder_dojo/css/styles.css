@@ -1266,5 +1266,9 @@ ol#mail-help-modal-list li p {
     padding-right: 0;
   }
 }
+/* line 19, ../sass/styles.scss */
+.panels-flexible-region .pane-title {
+  display: none;
+}
 
 /*# sourceMappingURL=styles.css.map */
