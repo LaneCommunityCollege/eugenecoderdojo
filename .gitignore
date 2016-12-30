@@ -87,3 +87,4 @@ fabric.properties
 tmp/*
 .DS_Store
 .travis/coderdojo.id_rsa
+*sass-cache
