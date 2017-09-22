@@ -941,23 +941,6 @@ function relation_views_api() {
   );
 }
 
-/** Implements hook_menu().
-*/
-function relation_menu() {
-    if (!module_exists('relation_ui')) {
-        $items['admin/structure/relation/manage/%relation_type'] = array(
-            'title' => 'Edit relation type',
-            'title callback' => 'relation_ui_type_page_title',
-            'title arguments' => array(4),
-            'access arguments' => array('administer relation types'),
-            'page callback' => 'drupal_get_form',
-            'page arguments' => array('relation_ui_type_form', 4),
-           'description' => 'Edit an existing relation type, including relation properties (directionality, transitivity etc), available bundles, and fields.',
-          );
-        return $items;
-  }
-}
-
 /**
  * Gets the label of the relation type of the given relation
  *
